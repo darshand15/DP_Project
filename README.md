@@ -1,8 +1,8 @@
-#DP Project
+# DP Project
 ---
-##Generic Programming in C
+## Generic Programming in C
 ---
-###Team Members:
+### Team Members:
 
 - Darshan D
 - Karan Kumar G
