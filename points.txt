@@ -1,0 +1,16 @@
+generic containers:
+using #define to define containers of generic type
+implement iterator for each of these containers
+containers:
+- vector
+- list
+- stack
+- queue
+
+find a way to run the functions of the generic containers properly
+
+iterators can be used to decouple the containers and the algorithms
+
+implement a few generic algorithms
+
+consider generic functions later
