@@ -34,6 +34,7 @@
     };
 
 
+//LIST
 
 #define init_list(TYPE, variable)								\
 {																\
@@ -228,6 +229,118 @@ void disp_list_##TYPE(const list_t *l1)									\
 			else if( l1->type_ == 2 )									\
 				printf("%d\n", trav->key);								\
 			else if( l1->type_ == 3 )									\
+				printf("%lf\n", trav->key);								\
+																		\
+			trav = trav->next;											\
+		}																\
+	}																	\
+}
+
+
+//STACK
+
+#define init_stack(TYPE, variable)								\
+{																\
+	variable.head = NULL;										\
+	variable.top = NULL;										\
+	TYPE a;														\
+	variable.type_ = typename(a);								\
+	variable.push = push_##TYPE;								\
+	variable.pop = pop_##TYPE;									\
+	variable.disp_stack = disp_stack_##TYPE;					\
+}
+
+
+#define STACK(stack_t, TYPE)      										\
+struct stack_node_##TYPE                     									\
+{                               										\
+	TYPE key;                   										\
+	struct stack_node_##TYPE *prev;          									\
+	struct stack_node_##TYPE *next;          									\
+																		\
+};                              										\
+typedef struct stack_node_##TYPE stack_node_##TYPE##_t;     						\
+																		\
+struct stack_##TYPE														\
+{                               										\
+	stack_node_##TYPE##_t *head;               								\
+	stack_node_##TYPE##_t *top;   											\
+	int type_; 															\
+	void (*push) (struct stack_##TYPE *ptr_s, TYPE key);           \
+	void (*pop) (struct stack_##TYPE *ptr_s);					\
+	void (*disp_stack) (const struct stack_##TYPE *ptr_s);					\
+																		\
+};                              										\
+typedef struct stack_##TYPE stack_t;     									\
+																		\
+																		\
+																		\
+																		\
+void push_##TYPE(stack_t* ptr_s, TYPE key)							\
+{																		\
+	stack_node_##TYPE##_t *temp = (stack_node_##TYPE##_t*)malloc(sizeof(stack_node_##TYPE##_t));						\
+	temp->key = key;													\
+	temp->prev = NULL;													\
+	temp->next = NULL;													\
+																		\
+	/*stack is empty*/													\
+	if(ptr_s->head == NULL)												\
+	{																	\
+		ptr_s->head = temp;												\
+		ptr_s->top = temp;												\
+	}																	\
+																		\
+	else																\
+	{																	\
+		ptr_s->top->next = temp;											\
+		temp->prev = ptr_s->top;											\
+		ptr_s->top = temp;												\
+	}																	\
+}																		\
+																		\
+                                                    			\
+																		\
+void pop_##TYPE(stack_t *ptr_s)                              			\
+{                                                           			\
+	/*stack is not empty	*/												\
+	if(ptr_s->head != NULL)												\
+	{						                                			\
+		stack_node_##TYPE##_t *temp = ptr_s->top;                            			\
+																		\
+		/* stack contains only one element	*/							\
+		if(ptr_s->head == ptr_s->top)                            			\
+		{                                                   			\
+			free(temp);                                     			\
+			ptr_s->head = NULL;                                			\
+			ptr_s->top = NULL;                                			\
+		}			                                        			\
+																		\
+		else                                                			\
+		{                                                   			\
+		   ptr_s->top->prev->next = NULL;                     			\
+		   ptr_s->top = ptr_s->top->prev;                       			\
+		   free(temp);                                      			\
+																		\
+		}                                                   			\
+	}                                                       			\
+}                                                           			\
+																		\
+																		\
+																		\
+void disp_stack_##TYPE(const stack_t *ptr_s)									\
+{																		\
+	if(ptr_s->head!=NULL)													\
+	{																	\
+		stack_node_##TYPE##_t *trav = ptr_s->head;								\
+		while(trav != NULL)												\
+		{																\
+			if( ptr_s->type_ == 0 )										\
+				printf("%c\n", trav->key);								\
+			else if( ptr_s->type_ == 1)									\
+				printf("%f\n", trav->key);								\
+			else if( ptr_s->type_ == 2 )									\
+				printf("%d\n", trav->key);								\
+			else if( ptr_s->type_ == 3 )									\
 				printf("%lf\n", trav->key);								\
 																		\
 			trav = trav->next;											\
