@@ -347,3 +347,115 @@ void disp_stack_##TYPE(const stack_t *ptr_s)									\
 		}																\
 	}																	\
 }
+
+
+//QUEUE
+
+#define init_queue(TYPE, variable)								\
+{																\
+	variable.front = NULL;										\
+	variable.tail = NULL;										\
+	TYPE a;														\
+	variable.type_ = typename(a);								\
+	variable.enqueue = enqueue_##TYPE;							\
+	variable.dequeue = dequeue_##TYPE;							\
+	variable.disp_queue = disp_queue_##TYPE;					\
+}
+
+
+#define QUEUE(queue_t, TYPE)      										\
+struct queue_node_##TYPE                     									\
+{                               										\
+	TYPE key;                   										\
+	struct queue_node_##TYPE *prev;          									\
+	struct queue_node_##TYPE *next;          									\
+																		\
+};                              										\
+typedef struct queue_node_##TYPE queue_node_##TYPE##_t;     						\
+																		\
+struct queue_##TYPE														\
+{                               										\
+	queue_node_##TYPE##_t *front;               								\
+	queue_node_##TYPE##_t *tail;   											\
+	int type_; 															\
+	void (*enqueue) (struct queue_##TYPE *ptr_q, TYPE key);           \
+	void (*dequeue) (struct queue_##TYPE *ptr_q);					\
+	void (*disp_queue) (const struct queue_##TYPE *ptr_q);					\
+																		\
+};                              										\
+typedef struct queue_##TYPE queue_t;     									\
+																		\
+																		\
+																		\
+																		\
+void enqueue_##TYPE(queue_t* ptr_q, TYPE key)							\
+{																		\
+	queue_node_##TYPE##_t *temp = (queue_node_##TYPE##_t*)malloc(sizeof(queue_node_##TYPE##_t));						\
+	temp->key = key;													\
+	temp->prev = NULL;													\
+	temp->next = NULL;													\
+																		\
+	/*queue is empty*/													\
+	if(ptr_q->front == NULL)												\
+	{																	\
+		ptr_q->front = temp;												\
+		ptr_q->tail = temp;												\
+	}																	\
+																		\
+	else																\
+	{																	\
+		ptr_q->tail->next = temp;											\
+		temp->prev = ptr_q->tail;											\
+		ptr_q->tail = temp;												\
+	}																	\
+}																		\
+																		\
+																\
+																		\
+void dequeue_##TYPE(queue_t *ptr_q)											\
+{																		\
+	/*queue is not empty*/												\
+	if(ptr_q->front != NULL)												\
+	{						                                			\
+		queue_node_##TYPE##_t *temp = ptr_q->front;                            			\
+																		\
+		/*queue contains only one element*/								\
+		if(ptr_q->front == ptr_q->tail)                            			\
+		{                                                   			\
+			free(temp);                                     			\
+			ptr_q->front = NULL;                                			\
+			ptr_q->tail = NULL;                                			\
+		}			                                        			\
+																		\
+		else                                                			\
+		{                                                  				\
+		   ptr_q->front->next->prev = NULL;                     			\
+		   ptr_q->front = ptr_q->front->next;                       			\
+		   free(temp);                                      			\
+																		\
+		}                                                   			\
+	}																	\
+}	                                                        			\
+																		\
+															\
+																		\
+void disp_queue_##TYPE(const queue_t *ptr_q)									\
+{																		\
+	if(ptr_q->front!=NULL)													\
+	{																	\
+		queue_node_##TYPE##_t *trav = ptr_q->front;								\
+		while(trav != NULL)												\
+		{																\
+			if( ptr_q->type_ == 0 )										\
+				printf("%c\n", trav->key);								\
+			else if( ptr_q->type_ == 1)									\
+				printf("%f\n", trav->key);								\
+			else if( ptr_q->type_ == 2 )									\
+				printf("%d\n", trav->key);								\
+			else if( ptr_q->type_ == 3 )									\
+				printf("%lf\n", trav->key);								\
+																		\
+			trav = trav->next;											\
+		}																\
+	}																	\
+}
