@@ -248,6 +248,7 @@ void disp_list_##TYPE(const list_t *l1)									\
 	variable.push = push_##TYPE;								\
 	variable.pop = pop_##TYPE;									\
 	variable.disp_stack = disp_stack_##TYPE;					\
+	variable.peek_stack = peek_stack_##TYPE;					\
 }
 
 
@@ -269,6 +270,7 @@ struct stack_##TYPE														\
 	void (*push) (struct stack_##TYPE *ptr_s, TYPE key);           \
 	void (*pop) (struct stack_##TYPE *ptr_s);					\
 	void (*disp_stack) (const struct stack_##TYPE *ptr_s);					\
+	TYPE (*peek_stack) (const struct stack_##TYPE *ptr_s);\
 																		\
 };                              										\
 typedef struct stack_##TYPE stack_t;     									\
@@ -345,6 +347,16 @@ void disp_stack_##TYPE(const stack_t *ptr_s)									\
 																		\
 			trav = trav->next;											\
 		}																\
+	}																	\
+}																		\
+																		\
+																		\
+TYPE peek_stack_##TYPE(const stack_t *ptr_s)							\
+{																		\
+	if(ptr_s->top != NULL)												\
+	{																	\
+		return ptr_s->top->key;											\
+																		\
 	}																	\
 }
 
