@@ -27,18 +27,18 @@ LIST(char_l, char)
 LIST(float_l, float)
 
 
-STACK(int_s, int)
-STACK(char_s, char)
-STACK(float_s, float)
-STACK(double_s, double)
+// STACK(int_s, int)
+// STACK(char_s, char)
+// STACK(float_s, float)
+// STACK(double_s, double)
 
 
-QUEUE(int_q, int)
-QUEUE(char_q, char)
-QUEUE(float_q, float)
-QUEUE(double_q, double)
+// QUEUE(int_q, int)
+// QUEUE(char_q, char)
+// QUEUE(float_q, float)
+// QUEUE(double_q, double)
 
-VECTOR(int_v, int)
+// VECTOR(int_v, int)
 
 
 int main()
@@ -46,18 +46,25 @@ int main()
     
     //checking operations on generic list container
 
-    // double_l l1;
-    // init_list(double, l1);
-    // l1.insert_at_beg(&l1, 7.34);
-    // l1.insert_at_end(&l1, 6.2334);
-    // l1.insert_at_beg(&l1, 1.254);
-    // l1.disp_list(&l1);
-    // l1.delete_key(&l1, 7.34);
-    // l1.disp_list(&l1);
-    // l1.insert_at_end(&l1,5.67);
-    // l1.insert_at_end(&l1,6.435);
-    // l1.insert_at_end(&l1,7.764);
-    // disp_list_double(&l1);
+    double_l l1;
+    init_list(double, l1);
+    l1.insert_at_beg(&l1, 7.34);
+    l1.insert_at_end(&l1, 6.2334);
+    l1.insert_at_beg(&l1, 1.254);
+    l1.disp_list(&l1);
+    l1.delete_key(&l1, 7.34);
+    l1.disp_list(&l1);
+    l1.insert_at_end(&l1,5.67);
+    l1.insert_at_end(&l1,6.435);
+    l1.insert_at_end(&l1,7.764);
+    disp_list_double(&l1);
+
+    double_l_iterator it;
+    init_list_iterator(double, l1, it);
+    while(it.has_next(&it))
+    {
+        printf("iterator : %f\n", it.next(&it));
+    }
 
     // int_l l2;
     // init_list(int, l2);
@@ -162,23 +169,23 @@ int main()
     // q4.disp_queue(&q4);
     // printf("PEEK - %lf\n\n",q4.peek_queue(&q4));
 
-    int_v v;
-    // printf("HERE");
-    init_vector(int, v);
-    v.make_new_dynamic_table(&v, 10);
-    v.push_back(&v, 5);
-    v.push_back(&v, 7);
-    v.push_back(&v, 4);
-    // printf("HERE");
-    for (int i = 0; i < v.dt->cur_size; i++)
-    {
-        printf("%d\n", v.access(&v, i));
-    }
-    v.pop_back(&v);
-        for (int i = 0; i < v.dt->cur_size; i++)
-    {
-        printf("%d\n", v.access(&v, i));
-    }
-    v.my_free(&v);
+    // int_v v;
+    // // printf("HERE");
+    // init_vector(int, v);
+    // v.make_new_dynamic_table(&v, 10);
+    // v.push_back(&v, 5);
+    // v.push_back(&v, 7);
+    // v.push_back(&v, 4);
+    // // printf("HERE");
+    // for (int i = 0; i < v.dt->cur_size; i++)
+    // {
+    //     printf("%d\n", v.access(&v, i));
+    // }
+    // v.pop_back(&v);
+    //     for (int i = 0; i < v.dt->cur_size; i++)
+    // {
+    //     printf("%d\n", v.access(&v, i));
+    // }
+    // v.my_free(&v);
 
 }

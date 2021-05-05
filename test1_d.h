@@ -51,6 +51,13 @@
 	variable.disp_list = disp_list_##TYPE;						\
 }
 
+#define init_list_iterator(TYPE, list, iterator)								\
+{																\
+	iterator.current = list.head;										\
+	iterator.has_next = has_next_##TYPE;				\
+	iterator.next = next_##TYPE;			\
+}
+
 
 #define LIST(list_t, TYPE)      										\
 struct node_##TYPE                     									\
@@ -76,9 +83,24 @@ struct list_##TYPE														\
 																		\
 };                              										\
 typedef struct list_##TYPE list_t;     									\
-																		\
-																		\
-																		\
+struct list_iterator_##TYPE\
+{\
+	node_##TYPE##_t* current;\
+	int type_;\
+	int (*has_next)(const struct list_iterator_##TYPE *);\
+	TYPE (*next)(struct list_iterator_##TYPE *);\
+};\
+typedef struct list_iterator_##TYPE list_t##_iterator;\
+int has_next_##TYPE(const list_t##_iterator *ptr_iterator)\
+{\
+	return ptr_iterator->current != 0;\
+}\
+TYPE next_##TYPE(list_t##_iterator *ptr_iterator)\
+{\
+	TYPE key = ptr_iterator->current->key;\
+	ptr_iterator->current = ptr_iterator->current->next;\
+	return key;\
+}									\
 																		\
 void insert_at_end_##TYPE(list_t* l1, TYPE key)							\
 {																		\
