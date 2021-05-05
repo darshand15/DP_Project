@@ -372,6 +372,7 @@ TYPE peek_stack_##TYPE(const stack_t *ptr_s)							\
 	variable.enqueue = enqueue_##TYPE;							\
 	variable.dequeue = dequeue_##TYPE;							\
 	variable.disp_queue = disp_queue_##TYPE;					\
+	variable.peek_queue = peek_queue_##TYPE;					\
 }
 
 
@@ -393,6 +394,7 @@ struct queue_##TYPE														\
 	void (*enqueue) (struct queue_##TYPE *ptr_q, TYPE key);           \
 	void (*dequeue) (struct queue_##TYPE *ptr_q);					\
 	void (*disp_queue) (const struct queue_##TYPE *ptr_q);					\
+	TYPE (*peek_queue) (const struct queue_##TYPE *ptr_q)						\
 																		\
 };                              										\
 typedef struct queue_##TYPE queue_t;     									\
@@ -469,5 +471,15 @@ void disp_queue_##TYPE(const queue_t *ptr_q)									\
 																		\
 			trav = trav->next;											\
 		}																\
+	}																	\
+}\
+\
+\
+TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
+{																		\
+	if(ptr_q->front != NULL)												\
+	{																	\
+		return ptr_q->front->key;											\
+																		\
 	}																	\
 }
