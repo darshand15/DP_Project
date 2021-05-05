@@ -6,33 +6,94 @@
 	return (a > b) ? a : b;          									\
   }
 
+
+#define bool_ 0
+#define int_ 0
+#define float_ 0
+#define double_ 0
+#define char_ 0
+
+
+#define typename(x) _Generic((x),                   \
+        _Bool: TYPENAME_BOOL,                       \
+         char: TYPENAME_CHAR,                       \
+          int: TYPENAME_INT,                        \
+        float: TYPENAME_FLOAT,                      \
+		double: TYPENAME_DOUBLE,                 	\
+        char*: TYPENAME_POINTER_TO_CHAR,        	\       
+		double*: TYPENAME_POINTER_TO_DOUBLE,		\
+		float*: TYPENAME_POINTER_TO_FLOAT,			\
+       void*: TYPENAME_POINTER_TO_VOID,        		\        
+	   int*: TYPENAME_POINTER_TO_INT,         		\
+      default: TYPENAME_OTHER)
+
+
+ enum t_typename {
+        TYPENAME_BOOL,                  //0
+        TYPENAME_CHAR,                  //1
+        TYPENAME_FLOAT,                 //2
+        TYPENAME_INT,                   //3
+        TYPENAME_DOUBLE,                //4
+		TYPENAME_POINTER_TO_INT,		//5
+		TYPENAME_POINTER_TO_FLOAT,		//6
+		TYPENAME_POINTER_TO_CHAR,		//7
+        TYPENAME_POINTER_TO_DOUBLE,     //8
+        TYPENAME_POINTER_TO_VOID,       //9
+        TYPENAME_OTHER                  //10
+    };
+
+
+
+#define init_list(TYPE, variable)								\
+{																\
+	variable.head = NULL;										\
+	variable.tail = NULL;										\
+	TYPE a;														\
+	variable.type_ = typename(a);								\
+}
+
+#define insert_at_end(variable, key)							\
+{																\
+	switch(variable.type_)										\
+	{															\
+		case 0: 												\
+		{														\
+			insert_at_end_bool(&variable, key);														\
+			break;												\
+		}														\
+		case 1: insert_at_end_char(&variable, key); break;		\
+		case 2: insert_at_end_float(&variable, key); break;		\
+		case 3: insert_at_end_int(&variable, key); break;		\
+		case 4: insert_at_end_double(&variable, key); break;	\
+		default: break;\
+	}\
+}
+
+
 #define LIST(list_t, TYPE)      										\
-struct node                     										\
+struct node_##TYPE                     									\
 {                               										\
 	TYPE key;                   										\
-	struct node *prev;          										\
-	struct node *next;          										\
+	struct node_##TYPE *prev;          									\
+	struct node_##TYPE *next;          									\
 																		\
 };                              										\
-typedef struct node node_t;     										\
+typedef struct node_##TYPE node_##TYPE##_t;     						\
 																		\
-struct list																\
+struct list_##TYPE														\
 {                               										\
-	node_t *head;               										\
-	node_t *tail;               										\
+	node_##TYPE##_t *head;               								\
+	node_##TYPE##_t *tail;   											\
+	int type_;            												\
 };                              										\
-typedef struct list list_t;     										\
+typedef struct list_##TYPE list_t;     									\
 																		\
-void init_list(list_t *l1)												\
+																		\
+																		\
+																		\
+void insert_at_end_##TYPE(list_t* l1, TYPE key)							\
 {																		\
-	l1->head = NULL;													\
-	l1->tail = NULL;													\
-}																		\
-																		\
-																		\
-void insert_at_end(list_t* l1, TYPE key)								\
-{																		\
-	node_t *temp = (node_t*)malloc(sizeof(node_t));						\
+	node_##TYPE##_t *temp = (node_##TYPE##_t*)malloc(sizeof(node_##TYPE##_t));						\
 	temp->key = key;													\
 	temp->prev = NULL;													\
 	temp->next = NULL;													\
@@ -52,9 +113,9 @@ void insert_at_end(list_t* l1, TYPE key)								\
 	}																	\
 }																		\
 																		\
-void insert_at_beg(list_t *l1, TYPE key)								\
+void insert_at_beg_##TYPE(list_t *l1, TYPE key)								\
 {																		\
-	node_t *temp = (node_t*)malloc(sizeof(node_t));						\
+	node_##TYPE##_t *temp = (node_##TYPE##_t*)malloc(sizeof(node_##TYPE##_t));						\
 	temp->key = key;													\
 	temp->prev = NULL;													\
 	temp->next = NULL;													\
@@ -74,12 +135,12 @@ void insert_at_beg(list_t *l1, TYPE key)								\
 	}																	\
 }																		\
 																		\
-void delete_from_beg(list_t *l1)											\
+void delete_from_beg_##TYPE(list_t *l1)											\
 {																		\
 	/*list is not empty	*/												\
 	if(l1->head != NULL)												\
 	{						                                			\
-		node_t *temp = l1->head;                            			\
+		node_##TYPE##_t *temp = l1->head;                            			\
 																		\
 		/*list contains only one element*/								\
 		if(l1->head == l1->tail)                            			\
@@ -99,12 +160,12 @@ void delete_from_beg(list_t *l1)											\
 	}																	\
 }	                                                        			\
 																		\
-void delete_from_end(list_t *l1)                              			\
+void delete_from_end_##TYPE(list_t *l1)                              			\
 {                                                           			\
 	/*list is not empty	*/												\
 	if(l1->head != NULL)												\
 	{						                                			\
-		node_t *temp = l1->tail;                            			\
+		node_##TYPE##_t *temp = l1->tail;                            			\
 																		\
 		/* list contains only one element	*/							\
 		if(l1->head == l1->tail)                            			\
@@ -124,16 +185,16 @@ void delete_from_end(list_t *l1)                              			\
 	}                                                       			\
 }                                                           			\
 																		\
-void delete_key(list_t *l1, TYPE key)                         			\
+void delete_key_##TYPE(list_t *l1, TYPE key)                         			\
 {                                                           			\
 	if(l1->head->key == key)                                			\
 	{                                                       			\
-		delete_from_beg(l1);                                			\
+		delete_from_beg_##TYPE(l1);                                			\
 	}                                                                   \
 																		\
 	else                                                                \
 	{                                                                   \
-		node_t *trav = l1->head;                                        \
+		node_##TYPE##_t *trav = l1->head;                                        \
 																		\
 		while(trav != NULL && trav->key != key)                         \
 		{                                                               \
@@ -145,7 +206,7 @@ void delete_key(list_t *l1, TYPE key)                         			\
 			/*element to be deleted is the last element */              \
 			if(trav == l1->tail)                                        \
 			{                                                           \
-				delete_from_end(l1);                                    \
+				delete_from_end_##TYPE(l1);                                    \
 			}                                                           \
 																		\
 			else                                                        \
@@ -166,14 +227,17 @@ void delete_key(list_t *l1, TYPE key)                         			\
 	}                                                                   \
 }																		\
 																		\
-void disp_list(const list_t *l1)												\
+void disp_list_##TYPE(const list_t *l1)									\
 {																		\
 	if(l1->head!=NULL)													\
 	{\
-		node_t *trav = l1->head;\
+		node_##TYPE##_t *trav = l1->head;\
 		while(trav != NULL)\
 		{	\
-			printf("%f\n", trav->key);\
+			if( l1->type_ == 6 )\
+				printf("%d\n", trav->key);\
+			else if( l1->type_ == 8 )\
+				printf("%f\n", trav->key);\
 			trav = trav->next;\
 		}\
 	}\
