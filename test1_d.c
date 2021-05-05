@@ -34,34 +34,40 @@ int main()
 
     double_l l1;
     init_list(double, l1);
-    // insert_at_beg_double(&l1, 7.34);
-    // insert_at_end_double(&l1, 6.2334);
-    // insert_at_beg_double(&l1, 1.254);
-    // disp_list_double(&l1);
-    // delete_key_double(&l1, 7.34);
-    // disp_list_double(&l1);
-    insert_at_end(l1,5.67);
-    insert_at_end(l1,6.435);
-    insert_at_end(l1,7.764);
+    l1.insert_at_beg(&l1, 7.34);
+    l1.insert_at_end(&l1, 6.2334);
+    l1.insert_at_beg(&l1, 1.254);
+    l1.disp_list(&l1);
+    l1.delete_key(&l1, 7.34);
+    l1.disp_list(&l1);
+    l1.insert_at_end(&l1,5.67);
+    l1.insert_at_end(&l1,6.435);
+    l1.insert_at_end(&l1,7.764);
     disp_list_double(&l1);
 
     int_l l2;
     init_list(int, l2);
-    insert_at_end(l2,5);
-    insert_at_end(l2,3);
-    insert_at_end(l2,7);
+    l2.insert_at_end(&l2,5);
+    l2.insert_at_end(&l2,3);
+    l2.insert_at_end(&l2,7);
     disp_list_int(&l2);
-    // insert_at_beg_int(&l2, 5);
-    // insert_at_end_int(&l2, 3);
-    // insert_at_beg_int(&l2, 7);
-    // disp_list_int(&l2);
-    // delete_key_int(&l2, 8);
-    // disp_list_int(&l2);
+    l2.insert_at_beg(&l2, 5);
+    l2.insert_at_end(&l2, 3);
+    l2.insert_at_beg(&l2, 7);
+    l2.disp_list(&l2);
+    l2.delete_key(&l2, 8);
+    l2.disp_list(&l2);
 
     char_l l3;
     init_list(char, l3);
+    l3.insert_at_beg(&l3,'A');
+    l3.insert_at_beg(&l3,'B');
+    l3.disp_list(&l3);
 
     float_l l4;
     init_list(float, l4);
+    l4.insert_at_end(&l4,12.4323f);
+    l4.insert_at_beg(&l4,3.14f);
+    l4.disp_list(&l4);
 
 }

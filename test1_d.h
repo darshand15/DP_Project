@@ -7,17 +7,9 @@
   }
 
 
-#define bool_ 0
-#define int_ 0
-#define float_ 0
-#define double_ 0
-#define char_ 0
-
-
 #define typename(x) _Generic((x),                   \
-        _Bool: TYPENAME_BOOL,                       \
-         char: TYPENAME_CHAR,                       \
-          int: TYPENAME_INT,                        \
+        char: TYPENAME_CHAR,                       \
+        int: TYPENAME_INT,                        \
         float: TYPENAME_FLOAT,                      \
 		double: TYPENAME_DOUBLE,                 	\
         char*: TYPENAME_POINTER_TO_CHAR,        	\       
@@ -29,17 +21,16 @@
 
 
  enum t_typename {
-        TYPENAME_BOOL,                  //0
-        TYPENAME_CHAR,                  //1
-        TYPENAME_FLOAT,                 //2
-        TYPENAME_INT,                   //3
-        TYPENAME_DOUBLE,                //4
-		TYPENAME_POINTER_TO_INT,		//5
-		TYPENAME_POINTER_TO_FLOAT,		//6
-		TYPENAME_POINTER_TO_CHAR,		//7
-        TYPENAME_POINTER_TO_DOUBLE,     //8
-        TYPENAME_POINTER_TO_VOID,       //9
-        TYPENAME_OTHER                  //10
+        TYPENAME_CHAR,                  //0
+        TYPENAME_FLOAT,                 //1
+        TYPENAME_INT,                   //2
+        TYPENAME_DOUBLE,                //3
+		TYPENAME_POINTER_TO_INT,		//4
+		TYPENAME_POINTER_TO_FLOAT,		//5
+		TYPENAME_POINTER_TO_CHAR,		//6
+        TYPENAME_POINTER_TO_DOUBLE,     //7
+        TYPENAME_POINTER_TO_VOID,       //8
+        TYPENAME_OTHER                  //9
     };
 
 
@@ -50,23 +41,12 @@
 	variable.tail = NULL;										\
 	TYPE a;														\
 	variable.type_ = typename(a);								\
-}
-
-#define insert_at_end(variable, key)							\
-{																\
-	switch(variable.type_)										\
-	{															\
-		case 0: 												\
-		{														\
-			insert_at_end_bool(&variable, key);														\
-			break;												\
-		}														\
-		case 1: insert_at_end_char(&variable, key); break;		\
-		case 2: insert_at_end_float(&variable, key); break;		\
-		case 3: insert_at_end_int(&variable, key); break;		\
-		case 4: insert_at_end_double(&variable, key); break;	\
-		default: break;\
-	}\
+	variable.insert_at_end = insert_at_end_##TYPE;				\
+	variable.insert_at_beg = insert_at_beg_##TYPE;				\
+	variable.delete_from_beg = delete_from_beg_##TYPE;			\
+	variable.delete_from_end = delete_from_end_##TYPE;			\
+	variable.delete_key = delete_key_##TYPE;					\
+	variable.disp_list = disp_list_##TYPE;						\
 }
 
 
@@ -84,7 +64,14 @@ struct list_##TYPE														\
 {                               										\
 	node_##TYPE##_t *head;               								\
 	node_##TYPE##_t *tail;   											\
-	int type_;            												\
+	int type_; 															\
+	void (*insert_at_end) (struct list_##TYPE *l1, TYPE key);           \
+	void (*insert_at_beg) (struct list_##TYPE *l1, TYPE key);			\
+	void (*delete_from_beg) (struct list_##TYPE *l1);					\
+	void (*delete_from_end) (struct list_##TYPE *l1);					\
+	void (*delete_key) (struct list_##TYPE *l1, TYPE key);				\
+	void (*disp_list) (const struct list_##TYPE *l1);					\
+																		\
 };                              										\
 typedef struct list_##TYPE list_t;     									\
 																		\
@@ -230,15 +217,20 @@ void delete_key_##TYPE(list_t *l1, TYPE key)                         			\
 void disp_list_##TYPE(const list_t *l1)									\
 {																		\
 	if(l1->head!=NULL)													\
-	{\
-		node_##TYPE##_t *trav = l1->head;\
-		while(trav != NULL)\
-		{	\
-			if( l1->type_ == 6 )\
-				printf("%d\n", trav->key);\
-			else if( l1->type_ == 8 )\
-				printf("%f\n", trav->key);\
-			trav = trav->next;\
-		}\
-	}\
+	{																	\
+		node_##TYPE##_t *trav = l1->head;								\
+		while(trav != NULL)												\
+		{																\
+			if( l1->type_ == 0 )										\
+				printf("%c\n", trav->key);								\
+			else if( l1->type_ == 1)									\
+				printf("%f\n", trav->key);								\
+			else if( l1->type_ == 2 )									\
+				printf("%d\n", trav->key);								\
+			else if( l1->type_ == 3 )									\
+				printf("%lf\n", trav->key);								\
+																		\
+			trav = trav->next;											\
+		}																\
+	}																	\
 }
