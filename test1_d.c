@@ -38,6 +38,7 @@ QUEUE(char_q, char)
 QUEUE(float_q, float)
 QUEUE(double_q, double)
 
+VECTOR(int_v, int)
 
 
 int main()
@@ -126,41 +127,58 @@ int main()
 
     //checking operations on generic queue container
 
-    int_q q1;
-    init_queue(int, q1);
-    q1.enqueue(&q1,3);
-    q1.enqueue(&q1,7);
-    q1.enqueue(&q1,2);
-    q1.disp_queue(&q1);
-    q1.dequeue(&q1);
-    q1.dequeue(&q1);
-    q1.disp_queue(&q1);
-    printf("PEEK - %d\n\n",q1.peek_queue(&q1));
+    // int_q q1;
+    // init_queue(int, q1);
+    // q1.enqueue(&q1,3);
+    // q1.enqueue(&q1,7);
+    // q1.enqueue(&q1,2);
+    // q1.disp_queue(&q1);
+    // q1.dequeue(&q1);
+    // q1.dequeue(&q1);
+    // q1.disp_queue(&q1);
+    // printf("PEEK - %d\n\n",q1.peek_queue(&q1));
 
-    char_q q2;
-    init_queue(char, q2);
-    q2.enqueue(&q2,'Q');
-    q2.disp_queue(&q2);
-    q2.dequeue(&q2);
-    q2.disp_queue(&q2);
-    printf("PEEK - %c\n\n",q2.peek_queue(&q2));
+    // char_q q2;
+    // init_queue(char, q2);
+    // q2.enqueue(&q2,'Q');
+    // q2.disp_queue(&q2);
+    // q2.dequeue(&q2);
+    // q2.disp_queue(&q2);
+    // printf("PEEK - %c\n\n",q2.peek_queue(&q2));
 
-    float_q q3;
-    init_queue(float, q3);
-    q3.dequeue(&q3);
-    q3.disp_queue(&q3);
-    q3.enqueue(&q3, 4524.34f);
-    q3.enqueue(&q3, 12.43234f);
-    q3.disp_queue(&q3);
-    printf("PEEK - %f\n\n",q3.peek_queue(&q3));
+    // float_q q3;
+    // init_queue(float, q3);
+    // q3.dequeue(&q3);
+    // q3.disp_queue(&q3);
+    // q3.enqueue(&q3, 4524.34f);
+    // q3.enqueue(&q3, 12.43234f);
+    // q3.disp_queue(&q3);
+    // printf("PEEK - %f\n\n",q3.peek_queue(&q3));
 
-    double_q q4;
-    init_queue(double, q4);
-    q4.enqueue(&q4,12.43);
-    q4.enqueue(&q4,234.536);
-    q4.disp_queue(&q4);
-    printf("PEEK - %lf\n\n",q4.peek_queue(&q4));
+    // double_q q4;
+    // init_queue(double, q4);
+    // q4.enqueue(&q4,12.43);
+    // q4.enqueue(&q4,234.536);
+    // q4.disp_queue(&q4);
+    // printf("PEEK - %lf\n\n",q4.peek_queue(&q4));
 
-
+    int_v v;
+    // printf("HERE");
+    init_vector(int, v);
+    v.make_new_dynamic_table(&v, 10);
+    v.push_back(&v, 5);
+    v.push_back(&v, 7);
+    v.push_back(&v, 4);
+    // printf("HERE");
+    for (int i = 0; i < v.dt->cur_size; i++)
+    {
+        printf("%d\n", v.access(&v, i));
+    }
+    v.pop_back(&v);
+        for (int i = 0; i < v.dt->cur_size; i++)
+    {
+        printf("%d\n", v.access(&v, i));
+    }
+    v.my_free(&v);
 
 }

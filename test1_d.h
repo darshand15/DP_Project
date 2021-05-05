@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #define Vector( TYPE , type2)          									\
   type2 type2##_MAX( type2 a, type2 b ) 								\
   {                                  									\
@@ -483,3 +484,98 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 																		\
 	}																	\
 }
+
+
+
+
+
+
+
+
+
+#define init_vector(TYPE, variable)								\
+{																\
+	variable.dt = NULL;										\
+	TYPE a;														\
+	variable.type_ = typename(a);								\
+	variable.make_new_dynamic_table = make_new_dynamic_table_##TYPE;								\
+	variable.push_back = push_back_##TYPE;									\
+	variable.pop_back = pop_back_##TYPE;					\
+	variable.my_free = my_free_##TYPE;					\
+	variable.access = access_##TYPE;					\
+}
+
+
+// VECTOR
+
+#define VECTOR(vector_t, TYPE)\
+typedef struct dynamic_table_##TYPE\
+{\
+	int size;\
+	int cur_size;\
+	TYPE d_table[0];\
+} d_table_t_##TYPE;\
+\
+typedef struct vector_##TYPE\
+{\
+	d_table_t_##TYPE* dt;\
+	int type_;\
+	void (*make_new_dynamic_table)(struct vector_##TYPE*, int);\
+	void (*push_back)(struct vector_##TYPE*, int);\
+	void (*pop_back)(struct vector_##TYPE*);\
+	void (*my_free)(struct vector_##TYPE*);\
+	TYPE (*access)(struct vector_##TYPE*, int);\
+} vector_t;\
+void make_new_dynamic_table_##TYPE(vector_t* v, int n)\
+{\
+    /*d_table_t_##TYPE *dt = (d_table_t_##TYPE*)malloc(sizeof(d_table_t_##TYPE) + sizeof(int)*n);*/\
+	v->dt = (d_table_t_##TYPE*)malloc(sizeof(d_table_t_##TYPE) + sizeof(int)*n);\
+    v->dt->size = n;\
+    v->dt->cur_size = 0;\
+}\
+void my_free_##TYPE(vector_t* v)\
+{\
+    free(v->dt);\
+}\
+void push_back_##TYPE(vector_t* v, int a)\
+{\
+    float r_factor = 1.5;\
+    float r_capacity = 1;\
+\
+    if((v->dt->cur_size) >= (r_capacity * (v->dt->size)))\
+    {\
+        d_table_t_##TYPE* old_dt = v->dt;\
+        int new_size = ceil(r_factor*(old_dt->size));\
+        make_new_dynamic_table_##TYPE(v, new_size);\
+        v->dt->cur_size = old_dt->cur_size;\
+        for(int i = 0; i < v->dt->cur_size; ++i)\
+        {\
+            v->dt->d_table[i] = old_dt->d_table[i];\
+        }\
+        free(old_dt);\
+    }\
+    v->dt->d_table[(v->dt->cur_size)++] = a;\
+}\
+void pop_back_##TYPE(vector_t* v)\
+{\
+    float d_factor = 0.25;\
+    float d_capacity = 0.25;\
+    if(v->dt->cur_size == 0) return;\
+    if((v->dt->cur_size) <= (d_capacity * v->dt->size))\
+    {\
+        d_table_t_##TYPE* old_dt = v->dt;\
+        int new_size = floor(d_factor*((old_dt)->size));\
+        make_new_dynamic_table_##TYPE(v, new_size);\
+        v->dt->cur_size = old_dt->cur_size;\
+        for(int i = 0; i < v->dt->cur_size; ++i)\
+        {\
+            v->dt->d_table[i] = old_dt->d_table[i];\
+        }\
+        free(old_dt);\
+    }\
+    --(v->dt->cur_size);\
+}\
+TYPE access_##TYPE(vector_t *v, int i)\
+{\
+	return v->dt->d_table[i];\
+}\
