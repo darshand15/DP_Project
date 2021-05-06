@@ -19,6 +19,30 @@
 	}\
 }
 
+#define count_if(it, pred, count)\
+{\
+	while(it.has_next(&it))\
+	{\
+		if(pred(it.get_value(&it)))\
+		{\
+			++count;\
+		}\
+		it.next(&it);\
+	}\
+}
+
+#define count(it, key, count)\
+{\
+	while(it.has_next(&it))\
+	{\
+		if(it.get_value(&it) == key)\
+		{\
+			++count;\
+		}\
+		it.next(&it);\
+	}\
+}
+
 
 #define typename(x) _Generic((x),                   \
         char: TYPENAME_CHAR,                        \
@@ -68,6 +92,8 @@
 	iterator.current = list.head;								\
 	iterator.has_next = has_next_list_##TYPE;					\
 	iterator.next = next_list_##TYPE;							\
+	TYPE a;\
+	iterator.type_ = typename(a);\
 	iterator.get_value = get_value_list_##TYPE;					\
 	iterator.set_current = set_current_list_##TYPE;				\
 }
@@ -317,6 +343,8 @@ void disp_list_##TYPE(const list_t *l1)									\
 #define init_stack_iterator(TYPE, stack, iterator)								\
 {																\
 	iterator.current = stack.head;										\
+	TYPE a;\
+	iterator.type_ = typename(a);\
 	iterator.has_next = has_next_stack_##TYPE;				\
 	iterator.next = next_stack_##TYPE;			\
 	iterator.get_value = get_value_stack_##TYPE;\
@@ -499,6 +527,8 @@ TYPE peek_stack_##TYPE(const stack_t *ptr_s)							\
 #define init_queue_iterator(TYPE, queue, iterator)								\
 {																\
 	iterator.current = queue.front;										\
+	TYPE a;\
+	iterator.type_ = typename(a);\
 	iterator.has_next = has_next_queue_##TYPE;				\
 	iterator.next = next_queue_##TYPE;			\
 	iterator.get_value = get_value_queue_##TYPE;\
@@ -675,6 +705,8 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 {																\
 	iterator.current = vector.dt;										\
 	iterator.current_ind = 0;										\
+	TYPE a;\
+	iterator.type_ = typename(a);\
 	iterator.has_next = has_next_vector_##TYPE;				\
 	iterator.next = next_vector_##TYPE;			\
 	iterator.get_value = get_value_vector_##TYPE;\
@@ -823,6 +855,35 @@ TYPE access_##TYPE(vector_t *v, int i)\
 \
 }
 
+#define init_map_iterator(TYPE_key, TYPE_val, map, iterator)\
+{\
+	int ind = 0;\
+	while(ind < map.size && map.map_arr[ind] == NULL)\
+	{\
+		ind += 1;\
+	}\
+	if(ind == map.size)\
+	{\
+		iterator.current = NULL;\
+		iterator.index = map.size;\
+	}\
+	else\
+	{\
+		iterator.current = map.map_arr[ind];\
+		iterator.index = ind;\
+	}										\
+	iterator.map_arr = map.map_arr;\
+	iterator.size = map.size;\
+	TYPE_key a;\
+	iterator.type_key = typename(a);\
+	TYPE_val b;\
+	iterator.type_val = typename(b);\
+	iterator.has_next = has_next_map_##TYPE_key##_##TYPE_val;				\
+	iterator.next = next_map_##TYPE_key##_##TYPE_val;			\
+	iterator.get_value = get_value_map_##TYPE_key##_##TYPE_val;\
+	iterator.set_current = set_current_map_##TYPE_key##_##TYPE_val;\
+}
+
 
 #define MAP(map_t, TYPE_key, TYPE_val)\
 struct map_node_##TYPE_key##_##TYPE_val\
@@ -843,7 +904,76 @@ struct map_##TYPE_key##_##TYPE_val\
 	void (*delete_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key);\
 	TYPE_val (*retrieve_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, int*);\
 };\
-typedef struct map_##TYPE_key##_##TYPE_val  map_t;\
+typedef struct map_##TYPE_key##_##TYPE_val map_t;\
+\
+\
+\
+struct map_iterator_##TYPE_key##_##TYPE_val\
+{\
+	map_node_##TYPE_key##_##TYPE_val##_t* current;\
+	int index;\
+	int size;\
+	int type_key;\
+	int type_val;\
+	map_node_##TYPE_key##_##TYPE_val##_t** map_arr;\
+	int (*has_next)(const struct map_iterator_##TYPE_key##_##TYPE_val *);\
+	TYPE_key (*next)(struct map_iterator_##TYPE_key##_##TYPE_val *);\
+	TYPE_key (*get_value)(const struct map_iterator_##TYPE_key##_##TYPE_val *);\
+	void (*set_current)(struct map_iterator_##TYPE_key##_##TYPE_val *, struct map_iterator_##TYPE_key##_##TYPE_val *);\
+};\
+\
+typedef struct map_iterator_##TYPE_key##_##TYPE_val map_t##_iterator;\
+\
+\
+int has_next_map_##TYPE_key##_##TYPE_val(const map_t##_iterator *it)\
+{\
+	return it->current != 0;\
+}\
+\
+\
+TYPE_key next_map_##TYPE_key##_##TYPE_val(map_t##_iterator *it)\
+{\
+	TYPE_key ret_key = it->current->key;\
+	if(it->current->next != NULL)\
+	{\
+		it->current = it->current->next;\
+		return ret_key;\
+	}\
+	int ind = it->index+1;\
+	while(ind < it->size && it->map_arr[ind] == NULL)\
+	{\
+		ind += 1;\
+	}\
+	if(ind == it->size)\
+	{\
+		it->current = NULL;\
+		it->index = it->size;\
+	}\
+	else\
+	{\
+		it->current = it->map_arr[ind];\
+		it->index = ind;\
+	}\
+	return ret_key;\
+}\
+TYPE_key get_value_map_##TYPE_key##_##TYPE_val(const map_t##_iterator *it)\
+{\
+	return it->current->key;\
+}\
+\
+\
+void set_current_map_##TYPE_key##_##TYPE_val(map_t##_iterator *lhs, map_t##_iterator *rhs)\
+{\
+	if(rhs != NULL)\
+	{\
+		lhs->current = rhs->current;\
+	}\
+	else\
+	{\
+		lhs->current = NULL;\
+	}\
+}\
+\
 \
 \
 void insert_map_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key, TYPE_val val)\
