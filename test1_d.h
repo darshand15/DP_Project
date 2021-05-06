@@ -43,6 +43,79 @@
 	}\
 }
 
+#define min(it, min, flag)\
+{\
+	if(it.has_next(&it))\
+	{\
+		min = it.get_value(&it);\
+		it.next(&it);\
+		flag = 1;\
+	}\
+	else\
+	{\
+		flag = 0;\
+	}\
+	while(it.has_next(&it))\
+	{\
+		if(it.get_value(&it) < min)\
+		{\
+			min = it.get_value(&it);\
+		}\
+		it.next(&it);\
+	}\
+}
+
+#define max(it, max, flag)\
+{\
+	if(it.has_next(&it))\
+	{\
+		max = it.get_value(&it);\
+		it.next(&it);\
+		flag = 1;\
+	}\
+	else\
+	{\
+		flag = 0;\
+	}\
+	while(it.has_next(&it))\
+	{\
+		if(it.get_value(&it) > max)\
+		{\
+			max = it.get_value(&it);\
+		}\
+		it.next(&it);\
+	}\
+}
+
+#define accumulate(it, acc)\
+{\
+	if(it.has_next(&it))\
+	{\
+		acc += it.get_value(&it);\
+		it.next(&it);\
+	}\
+	while(it.has_next(&it))\
+	{\
+		acc += it.get_value(&it);\
+		it.next(&it);\
+	}\
+}
+
+
+
+#define count(it, key, count)\
+{\
+	while(it.has_next(&it))\
+	{\
+		if(it.get_value(&it) == key)\
+		{\
+			++count;\
+		}\
+		it.next(&it);\
+	}\
+}
+
+
 
 #define typename(x) _Generic((x),                   \
         char: TYPENAME_CHAR,                        \

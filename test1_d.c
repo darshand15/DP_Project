@@ -69,32 +69,65 @@ int main()
     l1.insert_at_end(&l1,7.764);
     disp_list_double(&l1);
 
-    printf("Testing iterator\n\n");
-    double_l_iterator it;
-    init_list_iterator(double, l1, it);
+    double_l_iterator it_l_d;
+    init_list_iterator(double, l1, it_l_d);
+    double min_l;
+    int flag;
+    min(it_l_d,min_l,flag);
+    if(flag==1)
+    {
+        printf("MIN: %lf\n\n",min_l);
+    }
+
+    double_l_iterator it2_l_d;
+    init_list_iterator(double, l1, it2_l_d);
+    double max_l;
+    int flag2;
+    max(it2_l_d,max_l,flag2);
+    if(flag2==1)
+    {
+        printf("MAX: %lf\n\n",max_l);
+    }
+
+    double_l_iterator it3_l_d;
+    init_list_iterator(double, l1, it3_l_d);
+    double acc_l = 0;
+    accumulate(it3_l_d,acc_l);
+    printf("ACC: %lf\n\n",acc_l);
+    
+
+
+
+
+    // printf("Testing iterator\n\n");
+    // double_l_iterator it;
+    // init_list_iterator(double, l1, it);
     // while(it.has_next(&it))
     // {
     //     printf("iterator : %f\n", it.next(&it));
     // }
-    find(it, 6.435);
-    if(it.has_next(&it))
-        printf("SADFASDASDASDIterator: %f", it.get_value(&it));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND");
-    init_list_iterator(double, l1, it);
-    find(it, 123.4);
-    if(it.has_next(&it))
-        printf("SADFASDASDASDIterator: %f", it.get_value(&it));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND\n");
+    // find(it, 6.435);
+    // if(it.has_next(&it))
+    //     printf("SADFASDASDASDIterator: %f", it.get_value(&it));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND");
+    // init_list_iterator(double, l1, it);
+    // find(it, 123.4);
+    // if(it.has_next(&it))
+    //     printf("SADFASDASDASDIterator: %f", it.get_value(&it));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND\n");
 
-    init_list_iterator(double, l1, it);
-    int count = 0;
-    count(it, 6.2, count);
-    printf("Count: %d\n", count);
-    init_list_iterator(double, l1, it);
-    count_if(it, is_odd, count);
-    printf("Count: %d\n", count);
+    // init_list_iterator(double, l1, it);
+    // int count = 0;
+    // count(it, 6.2, count);
+    // printf("Count: %d\n", count);
+    // init_list_iterator(double, l1, it);
+    // count_if(it, is_odd, count);
+    // printf("Count: %d\n", count);
+
+
+
     // int_l l2;
     // init_list(int, l2);
     // l2.insert_at_end(&l2,5);
@@ -314,54 +347,54 @@ int main()
     // else
     //     printf("SADFASDASDASDIterator: NOT FOUND\n");
 
-    int_int_m m1;
-    init_map(int, int, 100, m1);
-    m1.insert_map(&m1, 5, 10);
-    m1.insert_map(&m1, 7, 14);
-    m1.insert_map(&m1, 9, 18);
-    m1.insert_map(&m1, 6, 12);
-    m1.insert_map(&m1, 25, 50);
-    m1.insert_map(&m1, 9, 231);
-    m1.delete_map(&m1, 12415);
+    // int_int_m m1;
+    // init_map(int, int, 100, m1);
+    // m1.insert_map(&m1, 5, 10);
+    // m1.insert_map(&m1, 7, 14);
+    // m1.insert_map(&m1, 9, 18);
+    // m1.insert_map(&m1, 6, 12);
+    // m1.insert_map(&m1, 25, 50);
+    // m1.insert_map(&m1, 9, 231);
+    // m1.delete_map(&m1, 12415);
     
-    int check, v1;
-    v1 = m1.retrieve_map(&m1, 9, &check);
-    if(check)
-    {
-        printf("R: %d\n", v1);
-    }
-    else
-    {
-        printf("Nothing to retreive\n");
-    }
+    // int check, v1;
+    // v1 = m1.retrieve_map(&m1, 9, &check);
+    // if(check)
+    // {
+    //     printf("R: %d\n", v1);
+    // }
+    // else
+    // {
+    //     printf("Nothing to retreive\n");
+    // }
 
-    int_int_m_iterator it2;
-    init_map_iterator(int, int, m1, it2);
-    while(it2.has_next(&it2))
-    {
-        printf("Iterator: %d %d\n", it2.get_value(&it2), m1.retrieve_map(&m1, it2.next(&it2), &check));
-    }
+    // int_int_m_iterator it2;
+    // init_map_iterator(int, int, m1, it2);
+    // while(it2.has_next(&it2))
+    // {
+    //     printf("Iterator: %d %d\n", it2.get_value(&it2), m1.retrieve_map(&m1, it2.next(&it2), &check));
+    // }
 
-    init_map_iterator(int, int, m1, it2);
-    find(it2, 9);
-    if(it2.has_next(&it2))
-        printf("SADFASDASDASDIterator: %d", it2.get_value(&it2));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND");
-    init_map_iterator(int, int, m1, it2);
-    find(it2, 324423);
-    if(it2.has_next(&it2))
-        printf("SADFASDASDASDIterator: %d", it2.get_value(&it2));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND\n");
+    // init_map_iterator(int, int, m1, it2);
+    // find(it2, 9);
+    // if(it2.has_next(&it2))
+    //     printf("SADFASDASDASDIterator: %d", it2.get_value(&it2));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND");
+    // init_map_iterator(int, int, m1, it2);
+    // find(it2, 324423);
+    // if(it2.has_next(&it2))
+    //     printf("SADFASDASDASDIterator: %d", it2.get_value(&it2));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND\n");
 
-    init_map_iterator(int, int, m1, it2);
-    count = 0;
-    count(it2, 4, count);
-    printf("Count: %d\n", count);
-    init_map_iterator(int, int, m1, it2);
-    count_if(it2, is_odd, count);
-    printf("Count: %d\n", count);
+    // init_map_iterator(int, int, m1, it2);
+    // int count = 0;
+    // count(it2, 4, count);
+    // printf("Count: %d\n", count);
+    // init_map_iterator(int, int, m1, it2);
+    // count_if(it2, is_odd, count);
+    // printf("Count: %d\n", count);
     // int_l l2;
 
 
