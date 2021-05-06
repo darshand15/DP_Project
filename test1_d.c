@@ -39,6 +39,8 @@ QUEUE(int_q, int)
 // QUEUE(double_q, double)
 
 VECTOR(int_v, int)
+MAP(int_int_m, int, int)
+MAP(double_int_m, double, int)
 
 int is_odd(int key)
 {
@@ -194,20 +196,20 @@ int main()
 
     //checking operations on generic queue container
 
-    int_q q1;
-    init_queue(int, q1);
-    q1.enqueue(&q1,3);
-    q1.enqueue(&q1,7);
-    q1.enqueue(&q1,2);
-    q1.disp_queue(&q1);
+    // int_q q1;
+    // init_queue(int, q1);
+    // q1.enqueue(&q1,3);
+    // q1.enqueue(&q1,7);
+    // q1.enqueue(&q1,2);
+    // q1.disp_queue(&q1);
     // q1.dequeue(&q1);
     // q1.dequeue(&q1);
-    q1.disp_queue(&q1);
-    printf("PEEK - %d\n\n",q1.peek_queue(&q1));
+    // q1.disp_queue(&q1);
+    // printf("PEEK - %d\n\n",q1.peek_queue(&q1));
 
-    printf("Testing iterator\n\n");
-    int_q_iterator it;
-    init_queue_iterator(int, q1, it);
+    // printf("Testing iterator\n\n");
+    // int_q_iterator it;
+    // init_queue_iterator(int, q1, it);
     // while(it.has_next(&it))
     // {
     //     printf("iterator : %d\n", it.next(&it));
@@ -217,17 +219,17 @@ int main()
     //     printf("Iterator: %d\n", it.get_value(&it));
     // else
     //     printf("Iterator: NOT FOUND\n");
-    find_if(it, is_odd);
-    if(it.has_next(&it))
-        printf("Iterator: %d\n", it.get_value(&it));
-    else
-        printf("Iterator: NOT FOUND\n");
-    if(it.has_next(&it))it.next(&it);
-    find_if(it, is_odd);
-    if(it.has_next(&it))
-        printf("SADFASDASDASDIterator: %d\n", it.get_value(&it));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND\n");
+    // find_if(it, is_odd);
+    // if(it.has_next(&it))
+    //     printf("Iterator: %d\n", it.get_value(&it));
+    // else
+    //     printf("Iterator: NOT FOUND\n");
+    // if(it.has_next(&it))it.next(&it);
+    // find_if(it, is_odd);
+    // if(it.has_next(&it))
+    //     printf("SADFASDASDASDIterator: %d\n", it.get_value(&it));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND\n");
 
 
 
@@ -257,49 +259,98 @@ int main()
 
     //checking operations on generic vector
 
-    int_v v;
+    // int_v v;
     // printf("HERE");
-    init_vector(int, v);
-    v.make_new_dynamic_table(&v, 10);
-    v.push_back(&v, 5);
-    v.push_back(&v, 7);
-    v.push_back(&v, 4);
-    v.push_back(&v, 8);
-    v.push_back(&v, 9);
+    // init_vector(int, v);
+    // v.make_new_dynamic_table(&v, 10);
+    // v.push_back(&v, 5);
+    // v.push_back(&v, 7);
+    // v.push_back(&v, 4);
+    // v.push_back(&v, 8);
+    // v.push_back(&v, 9);
     // printf("HERE");
-    for (int i = 0; i < v.dt->cur_size; i++)
-    {
-        printf("%d\n", v.access(&v, i));
-    }
+    // for (int i = 0; i < v.dt->cur_size; i++)
+    // {
+    //     printf("%d\n", v.access(&v, i));
+    // }
     // v.pop_back(&v);
-    for (int i = 0; i < v.dt->cur_size; i++)
-    {
-        printf("%d\n", v.access(&v, i));
-    }
+    // for (int i = 0; i < v.dt->cur_size; i++)
+    // {
+    //     printf("%d\n", v.access(&v, i));
+    // }
     // v.my_free(&v);
 
-    printf("Testing iterator\n\n");
-    int_v_iterator it2;
-    init_vector_iterator(int, v, it2);
+    // printf("Testing iterator\n\n");
+    // int_v_iterator it2;
+    // init_vector_iterator(int, v, it2);
     // while(it.has_next(&it))
     // {
     //     printf("iterator : %d\n", it.next(&it));
     // }
-    find(it2, 4);
-    if(it2.has_next(&it2))
-        printf("Iterator: %d\n", it2.get_value(&it2));
+    // find(it2, 4);
+    // if(it2.has_next(&it2))
+    //     printf("Iterator: %d\n", it2.get_value(&it2));
+    // else
+    //     printf("Iterator: NOT FOUND\n");
+    // find_if(it2, is_odd);
+    // if(it2.has_next(&it2))
+    //     printf("Iterator: %d\n", it2.get_value(&it2));
+    // else
+    //     printf("Iterator: NOT FOUND\n");
+    // if(it2.has_next(&it2))it2.next(&it2);
+    // find_if(it2, is_odd);
+    // if(it2.has_next(&it2))
+    //     printf("SADFASDASDASDIterator: %d\n", it2.get_value(&it2));
+    // else
+    //     printf("SADFASDASDASDIterator: NOT FOUND\n");
+
+    int_int_m m1;
+    init_map(int, int, 100, m1);
+    m1.insert_map(&m1, 5, 10);
+    m1.insert_map(&m1, 7, 14);
+    m1.insert_map(&m1, 9, 18);
+    m1.insert_map(&m1, 6, 12);
+    m1.insert_map(&m1, 25, 50);
+    m1.insert_map(&m1, 9, 231);
+    m1.delete_map(&m1, 12415);
+    
+    int check, v1;
+    v1 = m1.retrieve_map(&m1, 9, &check);
+    if(check)
+    {
+        printf("R: %d\n", v1);
+    }
     else
-        printf("Iterator: NOT FOUND\n");
-    find_if(it2, is_odd);
-    if(it2.has_next(&it2))
-        printf("Iterator: %d\n", it2.get_value(&it2));
+    {
+        printf("Nothing to retreive\n");
+    }
+    
+
+
+
+
+
+
+    double_int_m m2;
+    init_map(double, int, 100, m2);
+    m2.insert_map(&m2, 5.435, 10);
+    m2.insert_map(&m2, 7.09, 14);
+    m2.insert_map(&m2, 9.0934, 18);
+    m2.insert_map(&m2, 6.12, 12);
+    m2.insert_map(&m2, 25.54, 50);
+    m2.insert_map(&m2, 9.32, 231);
+    m2.delete_map(&m2, 9.32);
+    
+    v1 = m2.retrieve_map(&m2, 9.32, &check);
+    if(check)
+    {
+        printf("R: %d\n", v1);
+    }
     else
-        printf("Iterator: NOT FOUND\n");
-    if(it2.has_next(&it2))it2.next(&it2);
-    find_if(it2, is_odd);
-    if(it2.has_next(&it2))
-        printf("SADFASDASDASDIterator: %d\n", it2.get_value(&it2));
-    else
-        printf("SADFASDASDASDIterator: NOT FOUND\n");
+    {
+        printf("Nothing to retreive\n");
+    }
+
+
 
 }

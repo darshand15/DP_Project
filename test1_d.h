@@ -1,11 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#define Vector( TYPE , type2)          									\
-  type2 type2##_MAX( type2 a, type2 b ) 								\
-  {                                  									\
-	return (a > b) ? a : b;          									\
-  }
+
 
 #define find(it, key)\
 {\
@@ -25,16 +21,16 @@
 
 
 #define typename(x) _Generic((x),                   \
-        char: TYPENAME_CHAR,                       \
-        int: TYPENAME_INT,                        \
+        char: TYPENAME_CHAR,                        \
+        int: TYPENAME_INT,                          \
         float: TYPENAME_FLOAT,                      \
 		double: TYPENAME_DOUBLE,                 	\
         char*: TYPENAME_POINTER_TO_CHAR,        	\       
 		double*: TYPENAME_POINTER_TO_DOUBLE,		\
 		float*: TYPENAME_POINTER_TO_FLOAT,			\
-       void*: TYPENAME_POINTER_TO_VOID,        		\        
-	   int*: TYPENAME_POINTER_TO_INT,         		\
-      default: TYPENAME_OTHER)
+       	void*: TYPENAME_POINTER_TO_VOID,        	\        
+	   	int*: TYPENAME_POINTER_TO_INT,         		\
+      	default: TYPENAME_OTHER)
 
 
  enum t_typename {
@@ -67,13 +63,13 @@
 	variable.disp_list = disp_list_##TYPE;						\
 }
 
-#define init_list_iterator(TYPE, list, iterator)								\
+#define init_list_iterator(TYPE, list, iterator)				\
 {																\
-	iterator.current = list.head;										\
-	iterator.has_next = has_next_list_##TYPE;				\
-	iterator.next = next_list_##TYPE;			\
-	iterator.get_value = get_value_list_##TYPE;\
-	iterator.set_current = set_current_list_##TYPE;\
+	iterator.current = list.head;								\
+	iterator.has_next = has_next_list_##TYPE;					\
+	iterator.next = next_list_##TYPE;							\
+	iterator.get_value = get_value_list_##TYPE;					\
+	iterator.set_current = set_current_list_##TYPE;				\
 }
 
 
@@ -101,8 +97,10 @@ struct list_##TYPE														\
 																		\
 };                              										\
 typedef struct list_##TYPE list_t;     									\
-struct list_iterator_##TYPE\
-{\
+\
+\
+struct list_iterator_##TYPE												\
+{																		\
 	node_##TYPE##_t* current;\
 	int type_;\
 	int (*has_next)(const struct list_iterator_##TYPE *);\
@@ -110,11 +108,16 @@ struct list_iterator_##TYPE\
 	TYPE (*get_value)(const struct list_iterator_##TYPE *);\
 	void (*set_current)(struct list_iterator_##TYPE *, struct list_iterator_##TYPE *);\
 };\
+\
 typedef struct list_iterator_##TYPE list_t##_iterator;\
+\
+\
 int has_next_list_##TYPE(const list_t##_iterator *ptr_iterator)\
 {\
 	return ptr_iterator->current != 0;\
 }\
+\
+\
 TYPE next_list_##TYPE(list_t##_iterator *ptr_iterator)\
 {\
 	TYPE key = ptr_iterator->current->key;\
@@ -804,3 +807,143 @@ TYPE access_##TYPE(vector_t *v, int i)\
 }\
 
 
+//HASH MAP
+
+#define init_map(TYPE_key, TYPE_val, size_, variable)\
+{\
+	variable.size = size_;\
+	TYPE_key a;\
+	variable.type_key = typename(a);\
+	TYPE_val b;\
+	variable.type_val = typename(b);\
+	variable.map_arr = (map_node_##TYPE_key##_##TYPE_val##_t**)calloc(sizeof(map_node_##TYPE_key##_##TYPE_val##_t*), size_);\
+	variable.insert_map = insert_map_##TYPE_key##_##TYPE_val;\
+	variable.delete_map = del_map_##TYPE_key##_##TYPE_val;\
+	variable.retrieve_map = retrieve_##TYPE_key##_##TYPE_val;\
+\
+}
+
+
+#define MAP(map_t, TYPE_key, TYPE_val)\
+struct map_node_##TYPE_key##_##TYPE_val\
+{\
+	TYPE_key key;\
+	TYPE_val val;\
+	struct map_node_##TYPE_key##_##TYPE_val *next;\
+};\
+typedef struct map_node_##TYPE_key##_##TYPE_val  map_node_##TYPE_key##_##TYPE_val##_t;\
+\
+struct map_##TYPE_key##_##TYPE_val\
+{\
+	int size;\
+	int type_key;\
+	int type_val;\
+	map_node_##TYPE_key##_##TYPE_val##_t **map_arr;\
+	void (*insert_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, TYPE_val);\
+	void (*delete_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key);\
+	TYPE_val (*retrieve_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, int*);\
+};\
+typedef struct map_##TYPE_key##_##TYPE_val  map_t;\
+\
+\
+void insert_map_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key, TYPE_val val)\
+{\
+	int index = hash_##TYPE_key##_##TYPE_val(m, key);\
+	if(m->map_arr[index] == NULL)\
+	{\
+		map_node_##TYPE_key##_##TYPE_val##_t *temp = (map_node_##TYPE_key##_##TYPE_val##_t*)malloc(sizeof(map_node_##TYPE_key##_##TYPE_val##_t));\
+		temp->key = key;\
+		temp->val = val;\
+		temp->next = NULL;\
+		m->map_arr[index] = temp;\
+		return;\
+	}\
+\
+	map_node_##TYPE_key##_##TYPE_val##_t *trav = m->map_arr[index];\
+	map_node_##TYPE_key##_##TYPE_val##_t *prev = NULL;\
+	while(trav != NULL)\
+	{\
+		if(trav->key == key)\
+		{\
+			trav->val = val;\
+			break;\
+		}\
+		prev = trav;\
+		trav = trav->next;\
+	}\
+	if(trav == NULL)\
+	{\
+		map_node_##TYPE_key##_##TYPE_val##_t *temp = (map_node_##TYPE_key##_##TYPE_val##_t*)malloc(sizeof(map_node_##TYPE_key##_##TYPE_val##_t));\
+		temp->key = key;\
+		temp->val = val;\
+		temp->next = NULL;\
+		prev->next = temp;\
+	}\
+}\
+\
+\
+int hash_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key)\
+{\
+	switch(m->type_key)\
+	{\
+		case 0: return ((int)(key*100))%(m->size); break;\
+		case 2: return ((int)(key*100))%(m->size); break;\
+		case 1: return ((int)(key*100))%(m->size); break;\
+		case 3: return ((int)(key*100))%(m->size); break;\
+		default: break;\
+	}\
+}\
+\
+\
+void del_map_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key)\
+{\
+	int index = hash_##TYPE_key##_##TYPE_val(m, key);\
+	if(m->map_arr[index] != NULL)\
+	{\
+		map_node_##TYPE_key##_##TYPE_val##_t *trav = m->map_arr[index];\
+		map_node_##TYPE_key##_##TYPE_val##_t *prev = NULL;\
+		while(trav != NULL)\
+		{\
+			if(trav->key == key)\
+			{\
+				if(prev == NULL)\
+				{\
+					m->map_arr[index] = trav->next;\
+					free(trav);\
+					break;\
+				}\
+				else\
+				{\
+					prev->next = trav->next;\
+					free(trav);\
+					break;\
+				}\
+			}\
+			prev = trav;\
+			trav = trav->next;\
+		}\
+	}\
+}\
+\
+TYPE_val retrieve_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key, int* exists)\
+{\
+	int index = hash_##TYPE_key##_##TYPE_val(m, key);\
+	if(m->map_arr[index] == NULL)\
+	{\
+		*exists = 0;\
+		return -1;\
+	}\
+\
+	map_node_##TYPE_key##_##TYPE_val##_t *trav = m->map_arr[index];\
+	while(trav != NULL)\
+	{\
+		if(trav->key == key)\
+		{\
+			*exists = 1;\
+			return trav->val;\
+		}\
+		trav = trav->next;\
+	}\
+	*exists = 0;\
+	return -1;\
+}
