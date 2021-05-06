@@ -19,6 +19,18 @@
 	}\
 }
 
+#define count(it, key, count)\
+{\
+	while(it.has_next(&it))\
+	{\
+		if(it.get_value(&it) == key)\
+		{\
+			++count;\
+		}\
+		it.next(&it);\
+	}\
+}
+
 #define count_if(it, pred, count)\
 {\
 	while(it.has_next(&it))\
@@ -101,19 +113,6 @@
 	}\
 }
 
-
-
-#define count(it, key, count)\
-{\
-	while(it.has_next(&it))\
-	{\
-		if(it.get_value(&it) == key)\
-		{\
-			++count;\
-		}\
-		it.next(&it);\
-	}\
-}
 
 
 

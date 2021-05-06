@@ -67,7 +67,6 @@ int main()
     l1.insert_at_end(&l1,5.67);
     l1.insert_at_end(&l1,6.435);
     l1.insert_at_end(&l1,7.764);
-    disp_list_double(&l1);
 
     double_l_iterator it_l_d;
     init_list_iterator(double, l1, it_l_d);
@@ -347,6 +346,9 @@ int main()
     // else
     //     printf("SADFASDASDASDIterator: NOT FOUND\n");
 
+
+    //checking operations on map container
+    
     // int_int_m m1;
     // init_map(int, int, 100, m1);
     // m1.insert_map(&m1, 5, 10);
