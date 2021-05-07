@@ -3,132 +3,146 @@
 #include <math.h>
 
 
-#define find(first, last, key)												\
-{																	\
+#define find(first, last, key)														\
+{																					\
 	while(first.inequality(&first, &last) && first.get_value(&first)!= key)			\
-	{						\
-		first.next(&first);		\
-	}						\
+	{																				\
+		first.next(&first);															\
+	}																				\
 }
 
-#define find_if(first, last, pred)	\
-{							\
-	while(first.inequality(&first, &last) && !pred(first.get_value(&first)) )\
-	{						\
-		first.next(&first);		\
-	}						\
+
+#define find_if(first, last, pred)													\
+{																					\
+	while(first.inequality(&first, &last) && !pred(first.get_value(&first)) )		\
+	{																				\
+		first.next(&first);															\
+	}																				\
 }
+
 
 #define count(first, last, key, count)						\
-{													\
-	while(first.inequality(&first, &last))							\
-	{												\
-		if(first.get_value(&first) == key)				\
-		{											\
-			++count;								\
-		}											\
-		it.next(&first);								\
-	}												\
+{															\
+	while(first.inequality(&first, &last))					\
+	{														\
+															\
+		if(first.get_value(&first) == key)					\
+		{													\
+			++count;										\
+		}													\
+															\
+		first.nexct(&first);								\
+	}														\
 }
+
 
 #define count_if(first, last, pred, count)					\
-{													\
-	while(first.inequality(&first, &last))							\
-	{												\
+{															\
+	while(first.inequality(&first, &last))					\
+	{														\
+															\
 		if(pred(first.get_value(&first)))					\
-		{											\
-			++count;								\
-		}											\
-		first.next(&first);								\
-	}												\
-}
-
-#define min(first, last, min, flag)\
-{\
-	if(first.inequality(&first, &last))\
-	{\
-		min = first.get_value(&first);\
-		first.next(&first);\
-		flag = 1;\
-	}\
-	else\
-	{\
-		flag = 0;\
-	}\
-	while(first.inequality(&first, &last))\
-	{\
-		if(first.get_value(&first) < min)\
-		{\
-			min = first.get_value(&first);\
-		}\
-		first.next(&first);\
-	}\
-}
-
-#define max(first, last, max, flag)\
-{\
-	if(first.inequality(&first, &last))\
-	{\
-		max = first.get_value(&first);\
-		first.next(&first);\
-		flag = 1;\
-	}\
-	else\
-	{\
-		flag = 0;\
-	}\
-	while(first.inequality(&first, &last))\
-	{\
-		if(first.get_value(&first) > max)\
-		{\
-			max = first.get_value(&first);\
-		}\
-		first.next(&first);\
-	}\
-}
-
-#define accumulate(first, last, acc)\
-{\
-	if(first.inequality(&first, &last))\
-	{\
-		acc += first.get_value(&first);\
-		first.next(&first);\
-	}\
-	while(first.inequality(&first, &last))\
-	{\
-		acc += first.get_value(&first);\
-		first.next(&first);\
-	}\
+		{													\
+			++count;										\
+		}													\
+															\
+		first.next(&first);									\
+	}														\
 }
 
 
+#define min(first, last, min, flag)							\
+{															\
+	if(first.inequality(&first, &last))						\
+	{														\
+		min = first.get_value(&first);						\
+		first.next(&first);									\
+		flag = 1;											\
+	}														\
+	else													\
+	{														\
+		flag = 0;											\
+	}														\
+															\
+	while(first.inequality(&first, &last))					\
+	{														\
+		if(first.get_value(&first) < min)					\
+		{													\
+			min = first.get_value(&first);					\
+		}													\
+															\
+		first.next(&first);									\
+	}														\
+}
 
 
-#define typename(x) _Generic((x),                   \
-        char: TYPENAME_CHAR,                        \
-        int: TYPENAME_INT,                          \
-        float: TYPENAME_FLOAT,                      \
-		double: TYPENAME_DOUBLE,                 	\
-        char*: TYPENAME_POINTER_TO_CHAR,        	\       
-		double*: TYPENAME_POINTER_TO_DOUBLE,		\
-		float*: TYPENAME_POINTER_TO_FLOAT,			\
-       	void*: TYPENAME_POINTER_TO_VOID,        	\        
-	   	int*: TYPENAME_POINTER_TO_INT,         		\
+#define max(first, last, max, flag)							\
+{															\
+	if(first.inequality(&first, &last))						\
+	{														\
+		max = first.get_value(&first);						\
+		first.next(&first);									\
+		flag = 1;											\
+	}														\
+	else													\
+	{														\
+		flag = 0;											\
+	}														\
+															\
+	while(first.inequality(&first, &last))					\
+	{														\
+		if(first.get_value(&first) > max)					\
+		{													\
+			max = first.get_value(&first);					\
+		}													\
+															\
+		first.next(&first);									\
+	}														\
+}
+
+
+#define accumulate(first, last, acc)						\
+{															\
+	if(first.inequality(&first, &last))						\
+	{														\
+		acc += first.get_value(&first);						\
+		first.next(&first);									\
+	}														\
+															\
+	while(first.inequality(&first, &last))					\
+	{														\
+		acc += first.get_value(&first);						\
+		first.next(&first);									\
+	}														\
+}
+
+
+#define typename(x) _Generic((x),                   		\
+        char: TYPENAME_CHAR,                        		\
+        int: TYPENAME_INT,                          		\
+        float: TYPENAME_FLOAT,                      		\
+		double: TYPENAME_DOUBLE,                 			\
+        char*: TYPENAME_POINTER_TO_CHAR,        			\       
+		double*: TYPENAME_POINTER_TO_DOUBLE,				\
+		float*: TYPENAME_POINTER_TO_FLOAT,					\
+       	void*: TYPENAME_POINTER_TO_VOID,        			\        
+	   	int*: TYPENAME_POINTER_TO_INT,         				\
       	default: TYPENAME_OTHER)
 
 
  enum t_typename {
-        TYPENAME_CHAR,                  //0
-        TYPENAME_FLOAT,                 //1
-        TYPENAME_INT,                   //2
-        TYPENAME_DOUBLE,                //3
-		TYPENAME_POINTER_TO_INT,		//4
-		TYPENAME_POINTER_TO_FLOAT,		//5
-		TYPENAME_POINTER_TO_CHAR,		//6
-        TYPENAME_POINTER_TO_DOUBLE,     //7
-        TYPENAME_POINTER_TO_VOID,       //8
-        TYPENAME_OTHER                  //9
+        TYPENAME_CHAR,                  					//0
+        TYPENAME_FLOAT,                 					//1
+        TYPENAME_INT,                   					//2
+        TYPENAME_DOUBLE,                					//3
+		TYPENAME_POINTER_TO_INT,							//4
+		TYPENAME_POINTER_TO_FLOAT,							//5
+		TYPENAME_POINTER_TO_CHAR,							//6
+        TYPENAME_POINTER_TO_DOUBLE,     					//7
+        TYPENAME_POINTER_TO_VOID,       					//8
+        TYPENAME_OTHER                  					//9
     };
+
 
 
 //LIST
@@ -145,9 +159,10 @@
 	variable.delete_from_end = delete_from_end_##TYPE;					\
 	variable.delete_key = delete_key_##TYPE;							\
 	variable.disp_list = disp_list_##TYPE;								\
-	variable.begin = begin_list_##TYPE;										\
-	variable.end = end_list_##TYPE;											\
+	variable.begin = begin_list_##TYPE;									\
+	variable.end = end_list_##TYPE;										\
 }
+
 
 #define init_list_iterator(TYPE, list, iterator)						\
 {																		\
@@ -158,89 +173,93 @@
 	iterator.type_ = typename(a);										\
 	iterator.get_value = get_value_list_##TYPE;							\
 	iterator.set_current = set_current_list_##TYPE;						\
-	iterator.advance = advance_list_##TYPE;									\
-	iterator.equality = equality_list_##TYPE;								\
-	iterator.inequality = inequality_list_##TYPE;							\
+	iterator.advance = advance_list_##TYPE;								\
+	iterator.equality = equality_list_##TYPE;							\
+	iterator.inequality = inequality_list_##TYPE;						\
 }
 
 
-#define LIST(list_t, TYPE)      														\
-struct node_##TYPE                     													\
-{                               														\
-	TYPE key;                   														\
-	struct node_##TYPE *prev;          													\
-	struct node_##TYPE *next;          													\
-																						\
-};                              														\
-typedef struct node_##TYPE node_##TYPE##_t;     										\
-\
-struct list_iterator_##TYPE;\
-																						\
-struct list_##TYPE																		\
-{                               														\
-	node_##TYPE##_t *head;               												\
-	node_##TYPE##_t *tail;   															\
-	int type_; 																			\
-	void (*insert_at_end) (struct list_##TYPE *l1, TYPE key);           				\
-	void (*insert_at_beg) (struct list_##TYPE *l1, TYPE key);							\
-	void (*delete_from_beg) (struct list_##TYPE *l1);									\
-	void (*delete_from_end) (struct list_##TYPE *l1);									\
-	void (*delete_key) (struct list_##TYPE *l1, TYPE key);								\
-	void (*disp_list) (const struct list_##TYPE *l1);									\
-	struct list_iterator_##TYPE* (*begin) (struct list_##TYPE* l1);						\
-	struct list_iterator_##TYPE* (*end) (struct list_##TYPE* l1);						\
-																						\
-};                              														\
-typedef struct list_##TYPE list_t;     													\
-																						\
-																						\
-struct list_iterator_##TYPE																\
-{																						\
-	node_##TYPE##_t* current;															\
-	int type_;																			\
-	int (*has_next)(const struct list_iterator_##TYPE *);								\
-	TYPE (*next)(struct list_iterator_##TYPE *);										\
-	TYPE (*get_value)(const struct list_iterator_##TYPE *);								\
-	void (*set_current)(struct list_iterator_##TYPE *, struct list_iterator_##TYPE *);	\
+#define LIST(list_t, TYPE)      																	\
+struct node_##TYPE                     																\
+{                               																	\
+	TYPE key;                   																	\
+	struct node_##TYPE *prev;          																\
+	struct node_##TYPE *next;          																\
+																									\
+};                              																	\
+typedef struct node_##TYPE node_##TYPE##_t;     													\
+																									\
+																									\
+struct list_iterator_##TYPE;																		\
+																									\
+																									\
+struct list_##TYPE																					\
+{                               																	\
+	node_##TYPE##_t *head;               															\
+	node_##TYPE##_t *tail;   																		\
+	int type_; 																						\
+	void (*insert_at_end) (struct list_##TYPE *l1, TYPE key);           							\
+	void (*insert_at_beg) (struct list_##TYPE *l1, TYPE key);										\
+	void (*delete_from_beg) (struct list_##TYPE *l1);												\
+	void (*delete_from_end) (struct list_##TYPE *l1);												\
+	void (*delete_key) (struct list_##TYPE *l1, TYPE key);											\
+	void (*disp_list) (const struct list_##TYPE *l1);												\
+																									\								\
+	struct list_iterator_##TYPE* (*begin) (struct list_##TYPE* l1);									\
+	struct list_iterator_##TYPE* (*end) (struct list_##TYPE* l1);									\
+																									\
+};                              																	\
+typedef struct list_##TYPE list_t;     																\
+																									\
+																									\
+struct list_iterator_##TYPE																			\
+{																									\
+	node_##TYPE##_t* current;																		\
+	int type_;																						\
+	int (*has_next)(const struct list_iterator_##TYPE *);											\
+	TYPE (*next)(struct list_iterator_##TYPE *);													\
+	TYPE (*get_value)(const struct list_iterator_##TYPE *);											\
+	void (*set_current)(struct list_iterator_##TYPE *, struct list_iterator_##TYPE *);				\
 	void (*advance)(struct list_iterator_##TYPE *, int);											\
 	int (*equality)(const struct list_iterator_##TYPE *, const struct list_iterator_##TYPE *);		\
 	int (*inequality)(const struct list_iterator_##TYPE *, const struct list_iterator_##TYPE *);	\
-};																						\
-																						\
-typedef struct list_iterator_##TYPE list_t##_iterator;									\
-																						\
-																						\
-int has_next_list_##TYPE(const list_t##_iterator *ptr_iterator)							\
-{																						\
-	return ptr_iterator->current != 0;													\
-}																						\
-																						\
-																						\
-TYPE next_list_##TYPE(list_t##_iterator *ptr_iterator)									\
-{																						\
-	TYPE key = ptr_iterator->current->key;												\
-	ptr_iterator->current = ptr_iterator->current->next;								\
-	return key;																			\
-}																						\
-																						\
-																						\
-TYPE get_value_list_##TYPE(const list_t##_iterator *ptr_iterator)						\
-{																						\
-	return ptr_iterator->current->key;													\
-}																						\
-void set_current_list_##TYPE(list_t##_iterator *lhs, list_t##_iterator *rhs)			\
-{\
-	if(rhs != NULL)\
-	{\
+};																									\
+typedef struct list_iterator_##TYPE list_t##_iterator;												\
+																									\
+																									\
+int has_next_list_##TYPE(const list_t##_iterator *ptr_iterator)										\
+{																									\
+	return ptr_iterator->current != 0;																\
+}																									\
+																									\
+																									\
+TYPE next_list_##TYPE(list_t##_iterator *ptr_iterator)												\
+{																									\
+	TYPE key = ptr_iterator->current->key;															\
+	ptr_iterator->current = ptr_iterator->current->next;											\
+	return key;																						\
+}																									\
+																									\
+																									\
+TYPE get_value_list_##TYPE(const list_t##_iterator *ptr_iterator)									\
+{																									\
+	return ptr_iterator->current->key;																\
+}																									\
+																									\
+																									\
+void set_current_list_##TYPE(list_t##_iterator *lhs, list_t##_iterator *rhs)						\
+{																									\
+	if(rhs != NULL)																					\
+	{																								\
 		lhs->current = rhs->current;\
-	}\
+	}																								\
 	else\
-	{\
+	{																								\
 		lhs->current = NULL;\
-	}\
-}\
-\
-\
+	}																								\
+}																									\
+																									\
+																									\
 void advance_list_##TYPE(list_t##_iterator *lhs, int dist)\
 {\
 	while(lhs->has_next(lhs) && dist--)\
@@ -979,7 +998,7 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 	variable.access = access_##TYPE;					\
 	variable.begin = begin_vector_##TYPE;										\
 	variable.end = end_vector_##TYPE;\
-	variable.display = disp_vector_##TYPE;\
+	variable.disp_vector = disp_vector_##TYPE;\
 \
 }
 
@@ -1006,7 +1025,7 @@ typedef struct vector_##TYPE\
 	TYPE (*access)(struct vector_##TYPE*, int);\
 	struct vector_iterator_##TYPE* (*begin) (struct vector_##TYPE* l1);						\
 	struct vector_iterator_##TYPE* (*end) (struct vector_##TYPE* l1);						\
-	void (*display)(const struct vector_##TYPE*);\
+	void (*disp_vector)(const struct vector_##TYPE*);\
 \
 } vector_t;\
 \
