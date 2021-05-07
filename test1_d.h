@@ -3,101 +3,101 @@
 #include <math.h>
 
 
-#define find(it1, it2, key)												\
+#define find(first, last, key)												\
 {																	\
-	while(it1.inequality(&it1, &it2) && it1.get_value(&it1)!= key)			\
+	while(first.inequality(&first, &last) && first.get_value(&first)!= key)			\
 	{						\
-		it1.next(&it1);		\
+		first.next(&first);		\
 	}						\
 }
 
-#define find_if(it1, it2, pred)	\
+#define find_if(first, last, pred)	\
 {							\
-	while(it1.inequality(&it1, &it2) && !pred(it1.get_value(&it1)) )\
+	while(first.inequality(&first, &last) && !pred(first.get_value(&first)) )\
 	{						\
-		it1.next(&it1);		\
+		first.next(&first);		\
 	}						\
 }
 
-#define count(it1, it2, key, count)						\
+#define count(first, last, key, count)						\
 {													\
-	while(it1.inequality(&it1, &it2))							\
+	while(first.inequality(&first, &last))							\
 	{												\
-		if(it1.get_value(&it1) == key)				\
+		if(first.get_value(&first) == key)				\
 		{											\
 			++count;								\
 		}											\
-		it.next(&it1);								\
+		it.next(&first);								\
 	}												\
 }
 
-#define count_if(it1, it2, pred, count)					\
+#define count_if(first, last, pred, count)					\
 {													\
-	while(it1.inequality(&it1, &it2))							\
+	while(first.inequality(&first, &last))							\
 	{												\
-		if(pred(it1.get_value(&it1)))					\
+		if(pred(first.get_value(&first)))					\
 		{											\
 			++count;								\
 		}											\
-		it1.next(&it1);								\
+		first.next(&first);								\
 	}												\
 }
 
-#define min(it, min, flag)\
+#define min(first, last, min, flag)\
 {\
-	if(it.has_next(&it))\
+	if(first.inequality(&first, &last))\
 	{\
-		min = it.get_value(&it);\
-		it.next(&it);\
+		min = first.get_value(&first);\
+		first.next(&first);\
 		flag = 1;\
 	}\
 	else\
 	{\
 		flag = 0;\
 	}\
-	while(it.has_next(&it))\
+	while(first.inequality(&first, &last))\
 	{\
-		if(it.get_value(&it) < min)\
+		if(first.get_value(&first) < min)\
 		{\
-			min = it.get_value(&it);\
+			min = first.get_value(&first);\
 		}\
-		it.next(&it);\
+		first.next(&first);\
 	}\
 }
 
-#define max(it, max, flag)\
+#define max(first, last, max, flag)\
 {\
-	if(it.has_next(&it))\
+	if(first.inequality(&first, &last))\
 	{\
-		max = it.get_value(&it);\
-		it.next(&it);\
+		max = first.get_value(&first);\
+		first.next(&first);\
 		flag = 1;\
 	}\
 	else\
 	{\
 		flag = 0;\
 	}\
-	while(it.has_next(&it))\
+	while(first.inequality(&first, &last))\
 	{\
-		if(it.get_value(&it) > max)\
+		if(first.get_value(&first) > max)\
 		{\
-			max = it.get_value(&it);\
+			max = first.get_value(&first);\
 		}\
-		it.next(&it);\
+		first.next(&first);\
 	}\
 }
 
-#define accumulate(it, acc)\
+#define accumulate(first, last, acc)\
 {\
-	if(it.has_next(&it))\
+	if(first.inequality(&first, &last))\
 	{\
-		acc += it.get_value(&it);\
-		it.next(&it);\
+		acc += first.get_value(&first);\
+		first.next(&first);\
 	}\
-	while(it.has_next(&it))\
+	while(first.inequality(&first, &last))\
 	{\
-		acc += it.get_value(&it);\
-		it.next(&it);\
+		acc += first.get_value(&first);\
+		first.next(&first);\
 	}\
 }
 

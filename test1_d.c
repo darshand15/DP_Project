@@ -72,7 +72,8 @@ int main()
     init_list_iterator(double, l1, it_l_d);
     double min_l;
     int flag;
-    min(it_l_d,min_l,flag);
+    double_l_iterator it_l_d_e = *(l1.end(&l1));
+    min(it_l_d, it_l_d_e ,min_l,flag);
     if(flag==1)
     {
         printf("MIN: %lf\n\n",min_l);
@@ -82,7 +83,7 @@ int main()
     init_list_iterator(double, l1, it2_l_d);
     double max_l;
     int flag2;
-    max(it2_l_d,max_l,flag2);
+    max(it2_l_d,it_l_d_e,max_l,flag2);
     if(flag2==1)
     {
         printf("MAX: %lf\n\n",max_l);
@@ -91,7 +92,7 @@ int main()
     double_l_iterator it3_l_d;
     init_list_iterator(double, l1, it3_l_d);
     double acc_l = 0;
-    accumulate(it3_l_d,acc_l);
+    accumulate(it3_l_d,it_l_d_e,acc_l);
     printf("ACC: %lf\n\n",acc_l);
     
     double_l_iterator it4_l_d = *(l1.begin(&l1));
@@ -491,13 +492,15 @@ int main()
 
     int_v_iterator it3_v_d;
     init_vector_iterator(int, v, it3_v_d);
-    int acc_s = 0;
-    accumulate(it3_v_d,acc_s);
-    printf("ACC: %d\n\n",acc_s);
     
     int_v_iterator it4_v_d = *(v.begin(&v));
     int_v_iterator it5_v_d = *(v.end(&v));
 
+    int acc_s = 0;
+    accumulate(it4_v_d, it5_v_d, acc_s);
+    printf("ACC: %d\n\n",acc_s);
+
+    it4_v_d = *(v.begin(&v));
 
     // init_vector_iterator(int, v, it3_v_d);
     // init_vector_iterator(int, v, it4_v_d);
@@ -591,13 +594,16 @@ int main()
 
     int_int_m_iterator it3_m_d;
     init_map_iterator(int, int, m1, it3_m_d);
-    int acc_q = 0;
-    accumulate(it3_m_d,acc_q);
-    printf("ACC: %d\n\n",acc_q);
+    
     
     int_int_m_iterator it4_m_d = *(m1.begin(&m1));
     int_int_m_iterator it5_m_d = *(m1.end(&m1));
 
+    int acc_q = 0;
+    accumulate(it4_m_d, it5_m_d ,acc_q);
+    printf("ACC: %d\n\n",acc_q);
+
+    it4_m_d = *(m1.begin(&m1));
 
     // init_map_iterator(int, int, m1, it3_m_d);
     // init_map_iterator(int, int, m1, it4_m_d);
