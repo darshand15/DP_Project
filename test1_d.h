@@ -11,48 +11,36 @@
 	}						\
 }
 
-#define find_if(it, pred)	\
+#define find_if(it1, it2, pred)	\
 {							\
-	while(it.has_next(&it) && !pred(it.get_value(&it)) )\
+	while(it1.inequality(&it1, &it2) && !pred(it1.get_value(&it1)) )\
 	{						\
-		it.next(&it);		\
+		it1.next(&it1);		\
 	}						\
 }
 
-#define count(it, key, count)						\
+#define count(it1, it2, key, count)						\
 {													\
-	while(it.has_next(&it))							\
+	while(it1.inequality(&it1, &it2))							\
 	{												\
-		if(it.get_value(&it) == key)				\
+		if(it1.get_value(&it1) == key)				\
 		{											\
 			++count;								\
 		}											\
-		it.next(&it);								\
+		it.next(&it1);								\
 	}												\
 }
 
-#define count_if(it, pred, count)					\
+#define count_if(it1, it2, pred, count)					\
 {													\
-	while(it.has_next(&it))							\
+	while(it1.inequality(&it1, &it2))							\
 	{												\
-		if(pred(it.get_value(&it)))					\
+		if(pred(it1.get_value(&it1)))					\
 		{											\
 			++count;								\
 		}											\
-		it.next(&it);								\
+		it1.next(&it1);								\
 	}												\
-}
-
-#define count(it, key, count)\
-{\
-	while(it.has_next(&it))\
-	{\
-		if(it.get_value(&it) == key)\
-		{\
-			++count;\
-		}\
-		it.next(&it);\
-	}\
 }
 
 #define min(it, min, flag)\
