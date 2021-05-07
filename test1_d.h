@@ -3,44 +3,44 @@
 #include <math.h>
 
 
-#define find(it, key)\
-{\
-	while(it.has_next(&it) && it.get_value(&it) != key )\
-	{\
-		it.next(&it);\
-	}\
+#define find(it1, it2, key)												\
+{																	\
+	while(it1.inequality(&it1, &it2) && it1.get_value(&it1)!= key)			\
+	{						\
+		it1.next(&it1);		\
+	}						\
 }
 
-#define find_if(it, pred)\
-{\
+#define find_if(it, pred)	\
+{							\
 	while(it.has_next(&it) && !pred(it.get_value(&it)) )\
-	{\
-		it.next(&it);\
-	}\
+	{						\
+		it.next(&it);		\
+	}						\
 }
 
-#define count(it, key, count)\
-{\
-	while(it.has_next(&it))\
-	{\
-		if(it.get_value(&it) == key)\
-		{\
-			++count;\
-		}\
-		it.next(&it);\
-	}\
+#define count(it, key, count)						\
+{													\
+	while(it.has_next(&it))							\
+	{												\
+		if(it.get_value(&it) == key)				\
+		{											\
+			++count;								\
+		}											\
+		it.next(&it);								\
+	}												\
 }
 
-#define count_if(it, pred, count)\
-{\
-	while(it.has_next(&it))\
-	{\
-		if(pred(it.get_value(&it)))\
-		{\
-			++count;\
-		}\
-		it.next(&it);\
-	}\
+#define count_if(it, pred, count)					\
+{													\
+	while(it.has_next(&it))							\
+	{												\
+		if(pred(it.get_value(&it)))					\
+		{											\
+			++count;								\
+		}											\
+		it.next(&it);								\
+	}												\
 }
 
 #define count(it, key, count)\
@@ -145,90 +145,102 @@
 
 //LIST
 
-#define init_list(TYPE, variable)								\
-{																\
-	variable.head = NULL;										\
-	variable.tail = NULL;										\
-	TYPE a;														\
-	variable.type_ = typename(a);								\
-	variable.insert_at_end = insert_at_end_##TYPE;				\
-	variable.insert_at_beg = insert_at_beg_##TYPE;				\
-	variable.delete_from_beg = delete_from_beg_##TYPE;			\
-	variable.delete_from_end = delete_from_end_##TYPE;			\
-	variable.delete_key = delete_key_##TYPE;					\
-	variable.disp_list = disp_list_##TYPE;						\
-}
-
-#define init_list_iterator(TYPE, list, iterator)				\
-{																\
-	iterator.current = list.head;								\
-	iterator.has_next = has_next_list_##TYPE;					\
-	iterator.next = next_list_##TYPE;							\
-	TYPE a;\
-	iterator.type_ = typename(a);\
-	iterator.get_value = get_value_list_##TYPE;					\
-	iterator.set_current = set_current_list_##TYPE;				\
-}
-
-
-#define LIST(list_t, TYPE)      										\
-struct node_##TYPE                     									\
-{                               										\
-	TYPE key;                   										\
-	struct node_##TYPE *prev;          									\
-	struct node_##TYPE *next;          									\
-																		\
-};                              										\
-typedef struct node_##TYPE node_##TYPE##_t;     						\
-																		\
-struct list_##TYPE														\
-{                               										\
-	node_##TYPE##_t *head;               								\
-	node_##TYPE##_t *tail;   											\
-	int type_; 															\
-	void (*insert_at_end) (struct list_##TYPE *l1, TYPE key);           \
-	void (*insert_at_beg) (struct list_##TYPE *l1, TYPE key);			\
-	void (*delete_from_beg) (struct list_##TYPE *l1);					\
-	void (*delete_from_end) (struct list_##TYPE *l1);					\
-	void (*delete_key) (struct list_##TYPE *l1, TYPE key);				\
-	void (*disp_list) (const struct list_##TYPE *l1);					\
-																		\
-};                              										\
-typedef struct list_##TYPE list_t;     									\
-\
-\
-struct list_iterator_##TYPE												\
+#define init_list(TYPE, variable)										\
 {																		\
-	node_##TYPE##_t* current;\
-	int type_;\
-	int (*has_next)(const struct list_iterator_##TYPE *);\
-	TYPE (*next)(struct list_iterator_##TYPE *);\
-	TYPE (*get_value)(const struct list_iterator_##TYPE *);\
-	void (*set_current)(struct list_iterator_##TYPE *, struct list_iterator_##TYPE *);\
-};\
+	variable.head = NULL;												\
+	variable.tail = NULL;												\
+	TYPE a;																\
+	variable.type_ = typename(a);										\
+	variable.insert_at_end = insert_at_end_##TYPE;						\
+	variable.insert_at_beg = insert_at_beg_##TYPE;						\
+	variable.delete_from_beg = delete_from_beg_##TYPE;					\
+	variable.delete_from_end = delete_from_end_##TYPE;					\
+	variable.delete_key = delete_key_##TYPE;							\
+	variable.disp_list = disp_list_##TYPE;								\
+	variable.begin = begin_list_##TYPE;										\
+	variable.end = end_list_##TYPE;											\
+}
+
+#define init_list_iterator(TYPE, list, iterator)						\
+{																		\
+	iterator.current = list.head;										\
+	iterator.has_next = has_next_list_##TYPE;							\
+	iterator.next = next_list_##TYPE;									\
+	TYPE a;																\
+	iterator.type_ = typename(a);										\
+	iterator.get_value = get_value_list_##TYPE;							\
+	iterator.set_current = set_current_list_##TYPE;						\
+	iterator.advance = advance_list_##TYPE;									\
+	iterator.equality = equality_list_##TYPE;								\
+	iterator.inequality = inequality_list_##TYPE;							\
+}
+
+
+#define LIST(list_t, TYPE)      														\
+struct node_##TYPE                     													\
+{                               														\
+	TYPE key;                   														\
+	struct node_##TYPE *prev;          													\
+	struct node_##TYPE *next;          													\
+																						\
+};                              														\
+typedef struct node_##TYPE node_##TYPE##_t;     										\
 \
-typedef struct list_iterator_##TYPE list_t##_iterator;\
-\
-\
-int has_next_list_##TYPE(const list_t##_iterator *ptr_iterator)\
-{\
-	return ptr_iterator->current != 0;\
-}\
-\
-\
-TYPE next_list_##TYPE(list_t##_iterator *ptr_iterator)\
-{\
-	TYPE key = ptr_iterator->current->key;\
-	ptr_iterator->current = ptr_iterator->current->next;\
-	return key;\
-}									\
-\
-\
-TYPE get_value_list_##TYPE(const list_t##_iterator *ptr_iterator)\
-{\
-	return ptr_iterator->current->key;\
-}\
-void set_current_list_##TYPE(list_t##_iterator *lhs, list_t##_iterator *rhs)\
+struct list_iterator_##TYPE;\
+																						\
+struct list_##TYPE																		\
+{                               														\
+	node_##TYPE##_t *head;               												\
+	node_##TYPE##_t *tail;   															\
+	int type_; 																			\
+	void (*insert_at_end) (struct list_##TYPE *l1, TYPE key);           				\
+	void (*insert_at_beg) (struct list_##TYPE *l1, TYPE key);							\
+	void (*delete_from_beg) (struct list_##TYPE *l1);									\
+	void (*delete_from_end) (struct list_##TYPE *l1);									\
+	void (*delete_key) (struct list_##TYPE *l1, TYPE key);								\
+	void (*disp_list) (const struct list_##TYPE *l1);									\
+	struct list_iterator_##TYPE* (*begin) (struct list_##TYPE* l1);						\
+	struct list_iterator_##TYPE* (*end) (struct list_##TYPE* l1);						\
+																						\
+};                              														\
+typedef struct list_##TYPE list_t;     													\
+																						\
+																						\
+struct list_iterator_##TYPE																\
+{																						\
+	node_##TYPE##_t* current;															\
+	int type_;																			\
+	int (*has_next)(const struct list_iterator_##TYPE *);								\
+	TYPE (*next)(struct list_iterator_##TYPE *);										\
+	TYPE (*get_value)(const struct list_iterator_##TYPE *);								\
+	void (*set_current)(struct list_iterator_##TYPE *, struct list_iterator_##TYPE *);	\
+	void (*advance)(struct list_iterator_##TYPE *, int);											\
+	int (*equality)(const struct list_iterator_##TYPE *, const struct list_iterator_##TYPE *);		\
+	int (*inequality)(const struct list_iterator_##TYPE *, const struct list_iterator_##TYPE *);	\
+};																						\
+																						\
+typedef struct list_iterator_##TYPE list_t##_iterator;									\
+																						\
+																						\
+int has_next_list_##TYPE(const list_t##_iterator *ptr_iterator)							\
+{																						\
+	return ptr_iterator->current != 0;													\
+}																						\
+																						\
+																						\
+TYPE next_list_##TYPE(list_t##_iterator *ptr_iterator)									\
+{																						\
+	TYPE key = ptr_iterator->current->key;												\
+	ptr_iterator->current = ptr_iterator->current->next;								\
+	return key;																			\
+}																						\
+																						\
+																						\
+TYPE get_value_list_##TYPE(const list_t##_iterator *ptr_iterator)						\
+{																						\
+	return ptr_iterator->current->key;													\
+}																						\
+void set_current_list_##TYPE(list_t##_iterator *lhs, list_t##_iterator *rhs)			\
 {\
 	if(rhs != NULL)\
 	{\
@@ -238,6 +250,57 @@ void set_current_list_##TYPE(list_t##_iterator *lhs, list_t##_iterator *rhs)\
 	{\
 		lhs->current = NULL;\
 	}\
+}\
+\
+\
+void advance_list_##TYPE(list_t##_iterator *lhs, int dist)\
+{\
+	while(lhs->has_next(lhs) && dist--)\
+	{\
+		lhs->next(lhs);\
+	}\
+}\
+\
+int equality_list_##TYPE(const list_t##_iterator *lhs, const list_t##_iterator *rhs)\
+{\
+	return lhs->current == rhs->current;\
+}\
+\
+int inequality_list_##TYPE(const list_t##_iterator *lhs, const list_t##_iterator *rhs)\
+{\
+	return lhs->current != rhs->current;\
+}\
+\
+list_t##_iterator* begin_list_##TYPE(list_t* l1)\
+{\
+	list_t##_iterator *iterator = (list_t##_iterator *)malloc(sizeof(list_t##_iterator));\
+	iterator->current = l1->head;										\
+	iterator->has_next = has_next_list_##TYPE;							\
+	iterator->next = next_list_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_list_##TYPE;							\
+	iterator->set_current = set_current_list_##TYPE;						\
+	iterator->advance = advance_list_##TYPE;									\
+	iterator->equality = equality_list_##TYPE;								\
+	iterator->inequality = inequality_list_##TYPE;							\
+	return iterator;\
+}\
+\
+list_t##_iterator* end_list_##TYPE(list_t* l1)\
+{\
+	list_t##_iterator *iterator = (list_t##_iterator *)malloc(sizeof(list_t##_iterator));\
+	iterator->current = NULL;										\
+	iterator->has_next = has_next_list_##TYPE;							\
+	iterator->next = next_list_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_list_##TYPE;							\
+	iterator->set_current = set_current_list_##TYPE;						\
+	iterator->advance = advance_list_##TYPE;									\
+	iterator->equality = equality_list_##TYPE;								\
+	iterator->inequality = inequality_list_##TYPE;							\
+	return iterator;\
 }\
 																		\
 void insert_at_end_##TYPE(list_t* l1, TYPE key)							\
@@ -410,6 +473,8 @@ void disp_list_##TYPE(const list_t *l1)									\
 	variable.pop = pop_##TYPE;									\
 	variable.disp_stack = disp_stack_##TYPE;					\
 	variable.peek_stack = peek_stack_##TYPE;					\
+	variable.begin = begin_stack_##TYPE;										\
+	variable.end = end_stack_##TYPE;											\
 }
 
 #define init_stack_iterator(TYPE, stack, iterator)								\
@@ -421,6 +486,9 @@ void disp_list_##TYPE(const list_t *l1)									\
 	iterator.next = next_stack_##TYPE;			\
 	iterator.get_value = get_value_stack_##TYPE;\
 	iterator.set_current = set_current_stack_##TYPE;\
+	iterator.advance = advance_stack_##TYPE;									\
+	iterator.equality = equality_stack_##TYPE;								\
+	iterator.inequality = inequality_stack_##TYPE;							\
 }
 
 
@@ -434,6 +502,10 @@ struct stack_node_##TYPE                     									\
 };                              										\
 typedef struct stack_node_##TYPE stack_node_##TYPE##_t;     						\
 																		\
+																		\
+struct stack_iterator_##TYPE;\
+\
+\
 struct stack_##TYPE														\
 {                               										\
 	stack_node_##TYPE##_t *head;               								\
@@ -443,6 +515,8 @@ struct stack_##TYPE														\
 	void (*pop) (struct stack_##TYPE *ptr_s);					\
 	void (*disp_stack) (const struct stack_##TYPE *ptr_s);					\
 	TYPE (*peek_stack) (const struct stack_##TYPE *ptr_s);\
+	struct stack_iterator_##TYPE* (*begin) (struct stack_##TYPE* l1);						\
+	struct stack_iterator_##TYPE* (*end) (struct stack_##TYPE* l1);						\
 																		\
 };                              										\
 typedef struct stack_##TYPE stack_t;     									\
@@ -458,6 +532,9 @@ struct stack_iterator_##TYPE\
 	TYPE (*next)(struct stack_iterator_##TYPE *);\
 	TYPE (*get_value)(const struct stack_iterator_##TYPE *);\
 	void (*set_current)(struct stack_iterator_##TYPE *, struct stack_iterator_##TYPE *);\
+	void (*advance)(struct stack_iterator_##TYPE *, int);											\
+	int (*equality)(const struct stack_iterator_##TYPE *, const struct stack_iterator_##TYPE *);		\
+	int (*inequality)(const struct stack_iterator_##TYPE *, const struct stack_iterator_##TYPE *);	\
 };\
 \
 typedef struct stack_iterator_##TYPE stack_t##_iterator;\
@@ -497,6 +574,55 @@ void set_current_stack_##TYPE(stack_t##_iterator *lhs, stack_t##_iterator *rhs)\
 }\
 \
 \
+void advance_stack_##TYPE(stack_t##_iterator *lhs, int dist)\
+{\
+	while(lhs->has_next(lhs) && dist--)\
+	{\
+		lhs->next(lhs);\
+	}\
+}\
+\
+int equality_stack_##TYPE(const stack_t##_iterator *lhs, const stack_t##_iterator *rhs)\
+{\
+	return lhs->current == rhs->current;\
+}\
+\
+int inequality_stack_##TYPE(const stack_t##_iterator *lhs, const stack_t##_iterator *rhs)\
+{\
+	return lhs->current != rhs->current;\
+}\
+\
+stack_t##_iterator* begin_stack_##TYPE(stack_t* l1)\
+{\
+	stack_t##_iterator *iterator = (stack_t##_iterator *)malloc(sizeof(stack_t##_iterator));\
+	iterator->current = l1->head;										\
+	iterator->has_next = has_next_stack_##TYPE;							\
+	iterator->next = next_stack_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_stack_##TYPE;							\
+	iterator->set_current = set_current_stack_##TYPE;						\
+	iterator->advance = advance_stack_##TYPE;									\
+	iterator->equality = equality_stack_##TYPE;								\
+	iterator->inequality = inequality_stack_##TYPE;							\
+	return iterator;\
+}\
+\
+stack_t##_iterator* end_stack_##TYPE(stack_t* l1)\
+{\
+	stack_t##_iterator *iterator = (stack_t##_iterator *)malloc(sizeof(stack_t##_iterator));\
+	iterator->current = NULL;										\
+	iterator->has_next = has_next_stack_##TYPE;							\
+	iterator->next = next_stack_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_stack_##TYPE;							\
+	iterator->set_current = set_current_stack_##TYPE;						\
+	iterator->advance = advance_stack_##TYPE;									\
+	iterator->equality = equality_stack_##TYPE;								\
+	iterator->inequality = inequality_stack_##TYPE;							\
+	return iterator;\
+}\
 \
 \
 void push_##TYPE(stack_t* ptr_s, TYPE key)							\
@@ -594,6 +720,8 @@ TYPE peek_stack_##TYPE(const stack_t *ptr_s)							\
 	variable.dequeue = dequeue_##TYPE;							\
 	variable.disp_queue = disp_queue_##TYPE;					\
 	variable.peek_queue = peek_queue_##TYPE;					\
+	variable.begin = begin_queue_##TYPE;										\
+	variable.end = end_queue_##TYPE;											\
 }
 
 #define init_queue_iterator(TYPE, queue, iterator)								\
@@ -605,6 +733,9 @@ TYPE peek_stack_##TYPE(const stack_t *ptr_s)							\
 	iterator.next = next_queue_##TYPE;			\
 	iterator.get_value = get_value_queue_##TYPE;\
 	iterator.set_current = set_current_queue_##TYPE;\
+	iterator.advance = advance_queue_##TYPE;									\
+	iterator.equality = equality_queue_##TYPE;								\
+	iterator.inequality = inequality_queue_##TYPE;							\
 }
 
 
@@ -617,6 +748,9 @@ struct queue_node_##TYPE                     									\
 																		\
 };                              										\
 typedef struct queue_node_##TYPE queue_node_##TYPE##_t;     						\
+\
+struct queue_iterator_##TYPE;\
+\
 																		\
 struct queue_##TYPE														\
 {                               										\
@@ -626,7 +760,9 @@ struct queue_##TYPE														\
 	void (*enqueue) (struct queue_##TYPE *ptr_q, TYPE key);           \
 	void (*dequeue) (struct queue_##TYPE *ptr_q);					\
 	void (*disp_queue) (const struct queue_##TYPE *ptr_q);					\
-	TYPE (*peek_queue) (const struct queue_##TYPE *ptr_q)						\
+	TYPE (*peek_queue) (const struct queue_##TYPE *ptr_q);						\
+	struct queue_iterator_##TYPE* (*begin) (struct queue_##TYPE* l1);						\
+	struct queue_iterator_##TYPE* (*end) (struct queue_##TYPE* l1);						\
 																		\
 };                              										\
 typedef struct queue_##TYPE queue_t;     									\
@@ -642,6 +778,9 @@ struct queue_iterator_##TYPE\
 	TYPE (*next)(struct queue_iterator_##TYPE *);\
 	TYPE (*get_value)(const struct queue_iterator_##TYPE *);\
 	void (*set_current)(struct queue_iterator_##TYPE *, struct queue_iterator_##TYPE *);\
+	void (*advance)(struct queue_iterator_##TYPE *, int);											\
+	int (*equality)(const struct queue_iterator_##TYPE *, const struct queue_iterator_##TYPE *);		\
+	int (*inequality)(const struct queue_iterator_##TYPE *, const struct queue_iterator_##TYPE *);	\
 };\
 \
 typedef struct queue_iterator_##TYPE queue_t##_iterator;\
@@ -680,6 +819,56 @@ void set_current_queue_##TYPE(queue_t##_iterator *lhs, queue_t##_iterator *rhs)\
 	}\
 }\
 \
+\
+void advance_queue_##TYPE(queue_t##_iterator *lhs, int dist)\
+{\
+	while(lhs->has_next(lhs) && dist--)\
+	{\
+		lhs->next(lhs);\
+	}\
+}\
+\
+int equality_queue_##TYPE(const queue_t##_iterator *lhs, const queue_t##_iterator *rhs)\
+{\
+	return lhs->current == rhs->current;\
+}\
+\
+int inequality_queue_##TYPE(const queue_t##_iterator *lhs, const queue_t##_iterator *rhs)\
+{\
+	return lhs->current != rhs->current;\
+}\
+\
+queue_t##_iterator* begin_queue_##TYPE(queue_t* l1)\
+{\
+	queue_t##_iterator *iterator = (queue_t##_iterator *)malloc(sizeof(queue_t##_iterator));\
+	iterator->current = l1->front;										\
+	iterator->has_next = has_next_queue_##TYPE;							\
+	iterator->next = next_queue_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_queue_##TYPE;							\
+	iterator->set_current = set_current_queue_##TYPE;						\
+	iterator->advance = advance_queue_##TYPE;									\
+	iterator->equality = equality_queue_##TYPE;								\
+	iterator->inequality = inequality_queue_##TYPE;							\
+	return iterator;\
+}\
+\
+queue_t##_iterator* end_queue_##TYPE(queue_t* l1)\
+{\
+	queue_t##_iterator *iterator = (queue_t##_iterator *)malloc(sizeof(queue_t##_iterator));\
+	iterator->current = NULL;										\
+	iterator->has_next = has_next_queue_##TYPE;							\
+	iterator->next = next_queue_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_queue_##TYPE;							\
+	iterator->set_current = set_current_queue_##TYPE;						\
+	iterator->advance = advance_queue_##TYPE;									\
+	iterator->equality = equality_queue_##TYPE;								\
+	iterator->inequality = inequality_queue_##TYPE;							\
+	return iterator;\
+}\
 \
 \
 \
@@ -783,6 +972,9 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 	iterator.next = next_vector_##TYPE;			\
 	iterator.get_value = get_value_vector_##TYPE;\
 	iterator.set_current = set_current_vector_##TYPE;\
+	iterator.advance = advance_vector_##TYPE;									\
+	iterator.equality = equality_vector_##TYPE;								\
+	iterator.inequality = inequality_vector_##TYPE;							\
 }
 
 
@@ -797,6 +989,9 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 	variable.pop_back = pop_back_##TYPE;					\
 	variable.my_free = my_free_##TYPE;					\
 	variable.access = access_##TYPE;					\
+	variable.begin = begin_vector_##TYPE;										\
+	variable.end = end_vector_##TYPE;											\
+\	
 }
 
 
@@ -808,6 +1003,9 @@ typedef struct dynamic_table_##TYPE\
 	TYPE d_table[0];\
 } d_table_t_##TYPE;\
 \
+struct vector_iterator_##TYPE;\
+\
+\
 typedef struct vector_##TYPE\
 {\
 	d_table_t_##TYPE* dt;\
@@ -817,7 +1015,12 @@ typedef struct vector_##TYPE\
 	void (*pop_back)(struct vector_##TYPE*);\
 	void (*my_free)(struct vector_##TYPE*);\
 	TYPE (*access)(struct vector_##TYPE*, int);\
+	struct vector_iterator_##TYPE* (*begin) (struct vector_##TYPE* l1);						\
+	struct vector_iterator_##TYPE* (*end) (struct vector_##TYPE* l1);						\
+\
 } vector_t;\
+\
+\
 struct vector_iterator_##TYPE\
 {\
 	d_table_t_##TYPE* current;\
@@ -827,12 +1030,20 @@ struct vector_iterator_##TYPE\
 	TYPE (*next)(struct vector_iterator_##TYPE *);\
 	TYPE (*get_value)(const struct vector_iterator_##TYPE *);\
 	void (*set_current)(struct vector_iterator_##TYPE *, struct vector_iterator_##TYPE *);\
+	void (*advance)(struct vector_iterator_##TYPE *, int);											\
+	int (*equality)(const struct vector_iterator_##TYPE *, const struct vector_iterator_##TYPE *);		\
+	int (*inequality)(const struct vector_iterator_##TYPE *, const struct vector_iterator_##TYPE *);	\
+\
 };\
 typedef struct vector_iterator_##TYPE vector_t##_iterator;\
+\
+\
 int has_next_vector_##TYPE(const vector_t##_iterator *ptr_iterator)\
 {\
 	return ptr_iterator->current_ind != ptr_iterator->current->cur_size;\
 }\
+\
+\
 TYPE next_vector_##TYPE(vector_t##_iterator *ptr_iterator)\
 {\
 	TYPE key = ptr_iterator->current->d_table[ptr_iterator->current_ind];\
@@ -845,6 +1056,8 @@ TYPE get_value_vector_##TYPE(const vector_t##_iterator *ptr_iterator)\
 {\
 	return ptr_iterator->current->d_table[ptr_iterator->current_ind];\
 }\
+\
+\
 void set_current_vector_##TYPE(vector_t##_iterator *lhs, vector_t##_iterator *rhs)\
 {\
 	if(rhs != NULL)\
@@ -855,6 +1068,65 @@ void set_current_vector_##TYPE(vector_t##_iterator *lhs, vector_t##_iterator *rh
 	{\
 		lhs->current = NULL;\
 	}\
+}\
+\
+\
+void advance_vector_##TYPE(vector_t##_iterator *lhs, int dist)\
+{\
+	while(lhs->has_next(lhs) && dist--)\
+	{\
+		lhs->next(lhs);\
+	}\
+}\
+\
+\
+\
+int equality_vector_##TYPE(const vector_t##_iterator *lhs, const vector_t##_iterator *rhs)\
+{\
+	return lhs->current_ind == rhs->current_ind;\
+}\
+\
+\
+\
+int inequality_vector_##TYPE(const vector_t##_iterator *lhs, const vector_t##_iterator *rhs)\
+{\
+	return lhs->current_ind != rhs->current_ind;\
+}\
+\
+\
+\
+vector_t##_iterator* begin_vector_##TYPE(vector_t* l1)\
+{\
+	vector_t##_iterator *iterator = (vector_t##_iterator *)malloc(sizeof(vector_t##_iterator));\
+	iterator->current = l1->dt;										\
+	iterator->current_ind = 0;										\
+	iterator->has_next = has_next_vector_##TYPE;							\
+	iterator->next = next_vector_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_vector_##TYPE;							\
+	iterator->set_current = set_current_vector_##TYPE;						\
+	iterator->advance = advance_vector_##TYPE;									\
+	iterator->equality = equality_vector_##TYPE;								\
+	iterator->inequality = inequality_vector_##TYPE;							\
+	return iterator;\
+}\
+\
+vector_t##_iterator* end_vector_##TYPE(vector_t* l1)\
+{\
+	vector_t##_iterator *iterator = (vector_t##_iterator *)malloc(sizeof(vector_t##_iterator));\
+	iterator->current = l1->dt;										\
+	iterator->current_ind = l1->dt->cur_size;										\
+	iterator->has_next = has_next_vector_##TYPE;							\
+	iterator->next = next_vector_##TYPE;									\
+	TYPE a;																\
+	iterator->type_ = typename(a);										\
+	iterator->get_value = get_value_vector_##TYPE;							\
+	iterator->set_current = set_current_vector_##TYPE;						\
+	iterator->advance = advance_vector_##TYPE;									\
+	iterator->equality = equality_vector_##TYPE;								\
+	iterator->inequality = inequality_vector_##TYPE;							\
+	return iterator;\
 }\
 void make_new_dynamic_table_##TYPE(vector_t* v, int n)\
 {\
@@ -924,6 +1196,8 @@ TYPE access_##TYPE(vector_t *v, int i)\
 	variable.insert_map = insert_map_##TYPE_key##_##TYPE_val;\
 	variable.delete_map = del_map_##TYPE_key##_##TYPE_val;\
 	variable.retrieve_map = retrieve_##TYPE_key##_##TYPE_val;\
+	variable.begin = begin_map_##TYPE_key##_##TYPE_val;										\
+	variable.end = end_map_##TYPE_key##_##TYPE_val;											\
 \
 }
 
@@ -954,6 +1228,9 @@ TYPE access_##TYPE(vector_t *v, int i)\
 	iterator.next = next_map_##TYPE_key##_##TYPE_val;			\
 	iterator.get_value = get_value_map_##TYPE_key##_##TYPE_val;\
 	iterator.set_current = set_current_map_##TYPE_key##_##TYPE_val;\
+	iterator.advance = advance_map_##TYPE_key##_##TYPE_val;									\
+	iterator.equality = equality_map_##TYPE_key##_##TYPE_val;								\
+	iterator.inequality = inequality_map_##TYPE_key##_##TYPE_val;							\
 }
 
 
@@ -966,6 +1243,9 @@ struct map_node_##TYPE_key##_##TYPE_val\
 };\
 typedef struct map_node_##TYPE_key##_##TYPE_val  map_node_##TYPE_key##_##TYPE_val##_t;\
 \
+struct map_iterator_##TYPE_key##_##TYPE_val;\
+\
+\
 struct map_##TYPE_key##_##TYPE_val\
 {\
 	int size;\
@@ -975,6 +1255,8 @@ struct map_##TYPE_key##_##TYPE_val\
 	void (*insert_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, TYPE_val);\
 	void (*delete_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key);\
 	TYPE_val (*retrieve_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, int*);\
+	struct map_iterator_##TYPE_key##_##TYPE_val* (*begin) (struct map_##TYPE_key##_##TYPE_val* l1);						\
+	struct map_iterator_##TYPE_key##_##TYPE_val* (*end) (struct map_##TYPE_key##_##TYPE_val* l1);						\
 };\
 typedef struct map_##TYPE_key##_##TYPE_val map_t;\
 \
@@ -992,6 +1274,9 @@ struct map_iterator_##TYPE_key##_##TYPE_val\
 	TYPE_key (*next)(struct map_iterator_##TYPE_key##_##TYPE_val *);\
 	TYPE_key (*get_value)(const struct map_iterator_##TYPE_key##_##TYPE_val *);\
 	void (*set_current)(struct map_iterator_##TYPE_key##_##TYPE_val *, struct map_iterator_##TYPE_key##_##TYPE_val *);\
+	void (*advance)(struct map_iterator_##TYPE_key##_##TYPE_val *, int);											\
+	int (*equality)(const struct map_iterator_##TYPE_key##_##TYPE_val *, const struct map_iterator_##TYPE_key##_##TYPE_val *);		\
+	int (*inequality)(const struct map_iterator_##TYPE_key##_##TYPE_val *, const struct map_iterator_##TYPE_key##_##TYPE_val *);	\
 };\
 \
 typedef struct map_iterator_##TYPE_key##_##TYPE_val map_t##_iterator;\
@@ -1046,6 +1331,78 @@ void set_current_map_##TYPE_key##_##TYPE_val(map_t##_iterator *lhs, map_t##_iter
 	}\
 }\
 \
+void advance_map_##TYPE_key##_##TYPE_val(map_t##_iterator *lhs, int dist)\
+{\
+	while(lhs->has_next(lhs) && dist--)\
+	{\
+		lhs->next(lhs);\
+	}\
+}\
+\
+int equality_map_##TYPE_key##_##TYPE_val(const map_t##_iterator *lhs, const map_t##_iterator *rhs)\
+{\
+	return lhs->current == rhs->current;\
+}\
+\
+int inequality_map_##TYPE_key##_##TYPE_val(const map_t##_iterator *lhs, const map_t##_iterator *rhs)\
+{\
+	return lhs->current != rhs->current;\
+}\
+\
+map_t##_iterator* begin_map_##TYPE_key##_##TYPE_val(map_t* l1)\
+{\
+	map_t##_iterator *iterator = (map_t##_iterator *)malloc(sizeof(map_t##_iterator));\
+	int ind = 0;\
+	while(ind < l1->size && l1->map_arr[ind] == NULL)\
+	{\
+		ind += 1;\
+	}\
+	if(ind == l1->size)\
+	{\
+		iterator->current = NULL;\
+		iterator->index = l1->size;\
+	}\
+	else\
+	{\
+		iterator->current = l1->map_arr[ind];\
+		iterator->index = ind;\
+	}										\
+	iterator->map_arr = l1->map_arr;										\
+	iterator->size = l1->size;										\
+	iterator->has_next = has_next_map_##TYPE_key##_##TYPE_val;							\
+	iterator->next = next_map_##TYPE_key##_##TYPE_val;									\
+	TYPE_key a;\
+	iterator->type_key = typename(a);\
+	TYPE_val b;\
+	iterator->type_val = typename(b);\
+	iterator->get_value = get_value_map_##TYPE_key##_##TYPE_val;							\
+	iterator->set_current = set_current_map_##TYPE_key##_##TYPE_val;						\
+	iterator->advance = advance_map_##TYPE_key##_##TYPE_val;									\
+	iterator->equality = equality_map_##TYPE_key##_##TYPE_val;								\
+	iterator->inequality = inequality_map_##TYPE_key##_##TYPE_val;							\
+	return iterator;\
+}\
+\
+map_t##_iterator* end_map_##TYPE_key##_##TYPE_val(map_t* l1)\
+{\
+	map_t##_iterator *iterator = (map_t##_iterator *)malloc(sizeof(map_t##_iterator));\
+	iterator->current = NULL;\
+	iterator->index = l1->size;\
+	iterator->map_arr = l1->map_arr;										\
+	iterator->size = l1->size;										\
+	iterator->has_next = has_next_map_##TYPE_key##_##TYPE_val;							\
+	iterator->next = next_map_##TYPE_key##_##TYPE_val;									\
+	TYPE_key a;\
+	iterator->type_key = typename(a);\
+	TYPE_val b;\
+	iterator->type_val = typename(b);\
+	iterator->get_value = get_value_map_##TYPE_key##_##TYPE_val;							\
+	iterator->set_current = set_current_map_##TYPE_key##_##TYPE_val;						\
+	iterator->advance = advance_map_##TYPE_key##_##TYPE_val;									\
+	iterator->equality = equality_map_##TYPE_key##_##TYPE_val;								\
+	iterator->inequality = inequality_map_##TYPE_key##_##TYPE_val;							\
+	return iterator;\
+}\
 \
 \
 void insert_map_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key, TYPE_val val)\
