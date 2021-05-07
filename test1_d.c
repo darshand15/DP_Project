@@ -541,7 +541,7 @@ int main()
         printf("advance Not Found\n");
     }
 
-
+    v.display(&v);
 
     // printf("Testing iterator\n\n");
     // int_v_iterator it2;
@@ -644,13 +644,14 @@ int main()
         printf("advance Not Found\n");
     }
 
-    // int_int_m_iterator it2;
-    // init_map_iterator(int, int, m1, it2);
-    // while(it2.has_next(&it2))
-    // {
-    //     printf("Iterator: %d %d\n", it2.get_value(&it2), m1.retrieve_map(&m1, it2.next(&it2), &check));
-    // }
+    int_int_m_iterator it2;
+    init_map_iterator(int, int, m1, it2);
+    while(it2.has_next(&it2))
+    {
+        printf("Iterator: %d %d\n", it2.get_value(&it2), m1.retrieve_map(&m1, it2.next(&it2), &check));
+    }
 
+    m1.disp_map(&m1);
     // init_map_iterator(int, int, m1, it2);
     // find(it2, 9);
     // if(it2.has_next(&it2))

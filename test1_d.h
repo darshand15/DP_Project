@@ -978,8 +978,9 @@ TYPE peek_queue_##TYPE(const queue_t *ptr_q)							\
 	variable.my_free = my_free_##TYPE;					\
 	variable.access = access_##TYPE;					\
 	variable.begin = begin_vector_##TYPE;										\
-	variable.end = end_vector_##TYPE;											\
-\	
+	variable.end = end_vector_##TYPE;\
+	variable.display = disp_vector_##TYPE;\
+\
 }
 
 
@@ -1005,6 +1006,7 @@ typedef struct vector_##TYPE\
 	TYPE (*access)(struct vector_##TYPE*, int);\
 	struct vector_iterator_##TYPE* (*begin) (struct vector_##TYPE* l1);						\
 	struct vector_iterator_##TYPE* (*end) (struct vector_##TYPE* l1);						\
+	void (*display)(const struct vector_##TYPE*);\
 \
 } vector_t;\
 \
@@ -1169,6 +1171,20 @@ TYPE access_##TYPE(vector_t *v, int i)\
 {\
 	return v->dt->d_table[i];\
 }\
+void disp_vector_##TYPE(const vector_t *ptr_q)									\
+{																		\
+	for(int i = 0; i < ptr_q->dt->cur_size; ++i)\
+	{\
+		if( ptr_q->type_ == 0 )										\
+			printf("%c\n", ptr_q->dt->d_table[i]);								\
+		else if( ptr_q->type_ == 1)									\
+			printf("%f\n", ptr_q->dt->d_table[i]);								\
+		else if( ptr_q->type_ == 2 )									\
+			printf("%d\n", ptr_q->dt->d_table[i]);								\
+		else if( ptr_q->type_ == 3 )									\
+			printf("%lf\n", ptr_q->dt->d_table[i]);								\
+	}																\
+}
 
 
 //HASH MAP
@@ -1186,6 +1202,7 @@ TYPE access_##TYPE(vector_t *v, int i)\
 	variable.retrieve_map = retrieve_##TYPE_key##_##TYPE_val;\
 	variable.begin = begin_map_##TYPE_key##_##TYPE_val;										\
 	variable.end = end_map_##TYPE_key##_##TYPE_val;											\
+	variable.disp_map = disp_map_##TYPE_key##_##TYPE_val;											\
 \
 }
 
@@ -1245,6 +1262,7 @@ struct map_##TYPE_key##_##TYPE_val\
 	TYPE_val (*retrieve_map)(struct map_##TYPE_key##_##TYPE_val*, TYPE_key, int*);\
 	struct map_iterator_##TYPE_key##_##TYPE_val* (*begin) (struct map_##TYPE_key##_##TYPE_val* l1);						\
 	struct map_iterator_##TYPE_key##_##TYPE_val* (*end) (struct map_##TYPE_key##_##TYPE_val* l1);						\
+	void (*disp_map)( const struct map_##TYPE_key##_##TYPE_val*);\
 };\
 typedef struct map_##TYPE_key##_##TYPE_val map_t;\
 \
@@ -1493,4 +1511,34 @@ TYPE_val retrieve_##TYPE_key##_##TYPE_val(map_t* m, TYPE_key key, int* exists)\
 	}\
 	*exists = 0;\
 	return -1;\
+}\
+void disp_map_##TYPE_key##_##TYPE_val(const map_t* m)\
+{\
+	for(int i = 0; i < m->size; ++i)\
+	{\
+		if(m->map_arr[i])\
+		{\
+			map_node_##TYPE_key##_##TYPE_val##_t *trav = m->map_arr[i];\
+			while(trav != NULL)												\
+			{																\
+				if( m->type_key == 0 )										\
+					printf("Key : %c ", trav->key);								\
+				else if( m->type_key == 1)									\
+					printf("Key : %f ", trav->key);								\
+				else if( m->type_key == 2 )								\
+					printf("Key : %d ", trav->key);								\
+				else if( m->type_key == 3 )								\
+					printf("Key : %lf ", trav->key);								\
+				if( m->type_val == 0 )										\
+					printf("Val : %c\n", trav->val);								\
+				else if( m->type_val == 1)									\
+					printf("Val : %f\n", trav->val);								\
+				else if( m->type_val == 2 )								\
+					printf("Val : %d\n", trav->val);								\
+				else if( m->type_val == 3 )								\
+					printf("Val : %lf\n", trav->val);								\
+				trav = trav->next;											\
+			}																\
+		}\
+	}\
 }
