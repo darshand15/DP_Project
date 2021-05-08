@@ -23,6 +23,7 @@
 
 #define count(first, last, key, count)						\
 {															\
+	count = 0;												\
 	while(first.inequality(&first, &last))					\
 	{														\
 															\
@@ -38,6 +39,7 @@
 
 #define count_if(first, last, pred, count)					\
 {															\
+	count = 0;												\
 	while(first.inequality(&first, &last))					\
 	{														\
 															\
