@@ -4,7 +4,7 @@
 //     return (x > y) ? x : y;          \
 //   }
 
-#include "test1_d.h"
+#include "generics.h"
 // GENERIC_MAX(int)
 
 // template(typename t1,..., fn_name)
