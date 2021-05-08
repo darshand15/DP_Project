@@ -268,7 +268,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %lf in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
         int_l_iterator it6_l_d = *(l1.begin(&l1));
         it6_l_d.advance(&it6_l_d,2);
 
@@ -292,6 +292,7 @@ int main()
         int_l_iterator it8_l_d = *(l1.end(&l1));
         int count = 0;
         count(it6_l_d, it8_l_d, 6, count);
+        printf("Using Generic Algorithm Count on key %d\n\n", 6);
         printf("Count: %d\n\n", count);
         count = 0;
         init_list_iterator(int, l1, it6_l_d);

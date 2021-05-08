@@ -292,6 +292,7 @@ int main()
         int_q_iterator it8_q_d = *(l1.end(&l1));
         int count = 0;
         count(it6_q_d, it8_q_d, 6, count);
+        printf("Using Generic Algorithm Count on key %d\n\n", 6);
         printf("Count: %d\n\n", count);
         count = 0;
         init_queue_iterator(int, l1, it6_q_d);
