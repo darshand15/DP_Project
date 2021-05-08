@@ -169,6 +169,7 @@ int main()
     double_v_iterator it8_v_d = *(l1.end(&l1));
     int count = 0;
     count(it6_v_d, it8_v_d, 6.2334, count);
+    printf("Using Generic Algorithm Count on key %f\n\n", 6.2334);
     printf("Count: %d\n\n", count);
     count = 0;
     init_vector_iterator(double, l1, it6_v_d);
