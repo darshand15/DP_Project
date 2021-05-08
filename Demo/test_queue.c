@@ -1,25 +1,4 @@
-// #define template(fn_name, TYPE, x, y )          \
-//   TYPE fn_name( TYPE x, TYPE y ) \
-//   {                                  \
-//     return (x > y) ? x : y;          \
-//   }
-
 #include "generics.h"
-// GENERIC_MAX(int)
-
-// template(typename t1,..., fn_name)
-// t1 fn_name()
-
-
-// template(max, typdef typename t1, t2)
-// t1 max(t2 a, t2 b)
-// {
-    
-// }
-// Vector(int_v, int)
-// Vector(double_v, double)
-// LIST(int_q, int)
-
 
 // LIST(double_l, double)
 // LIST(int_l, int)
