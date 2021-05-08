@@ -85,11 +85,11 @@ int main()
     l1.disp_map(&l1);
     print_dash;
     printf("insert_map : %d : %d\n", 5, 10);
-    l1.insert_map(&l1,5, 10);
+    l1.insert_map(&l1, 5, 10);
     printf("insert_map : %d : %d\n", 12, 24);
-    l1.insert_map(&l1,12, 24);
+    l1.insert_map(&l1, 12, 24);
     printf("insert_map : %d : %d\n", 18, 36);
-    l1.insert_map(&l1,18, 36);
+    l1.insert_map(&l1, 18, 36);
 
     int_int_m_iterator it_m_d;
     init_map_iterator(int, int, l1, it_m_d);
@@ -218,7 +218,7 @@ int main()
 
         int_double_m_iterator it_m_d;
         init_map_iterator(int, double, l1, it_m_d);
-        double min_m;
+        int min_m;
         int flag;
         int_double_m_iterator it_m_d_e = *(l1.end(&l1));
         print_dash;
@@ -226,24 +226,24 @@ int main()
         min(it_m_d, it_m_d_e , min_m, flag);
         if(flag==1)
         {
-            printf("MIN: %f\n\n", min_m);
+            printf("MIN: %d\n\n", min_m);
         }
 
         int_double_m_iterator it2_m_d;
         init_map_iterator(int, double, l1, it2_m_d);
-        double max_m;
+        int max_m;
         int flag2;
         max(it2_m_d,it_m_d_e,max_m,flag2);
         if(flag2==1)
         {
-            printf("MAX: %f\n\n",max_m);
+            printf("MAX: %d\n\n",max_m);
         }
 
         int_double_m_iterator it3_m_d;
         init_map_iterator(int, double, l1, it3_m_d);
-        double acc_m = 0;
+        int acc_m = 0;
         accumulate(it3_m_d,it_m_d_e,acc_m);
-        printf("ACC: %f\n\n",acc_m);
+        printf("ACC: %d\n\n",acc_m);
         
         int_double_m_iterator it4_m_d = *(l1.begin(&l1));
         int_double_m_iterator it5_m_d = *(l1.end(&l1));
@@ -252,7 +252,7 @@ int main()
         find(it4_m_d, it5_m_d, 6)
         if(it4_m_d.inequality(&it4_m_d, &it5_m_d))
         {
-            printf("Found: %f\n\n", it4_m_d.get_value(&it4_m_d));
+            printf("Found: %d\n\n", it4_m_d.get_value(&it4_m_d));
         }
         else
         {
@@ -271,17 +271,17 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 9);
         int_double_m_iterator it6_m_d = *(l1.begin(&l1));
         it6_m_d.advance(&it6_m_d,2);
 
         int_double_m_iterator it7_m_d = *(l1.begin(&l1));
         it7_m_d.advance(&it7_m_d,6);
 
-        find(it6_m_d, it7_m_d, 4)
+        find(it6_m_d, it7_m_d, 9)
         if(it6_m_d.inequality(&it6_m_d, &it7_m_d))
         {
-            printf("advance Found: %f\n\n", it6_m_d.get_value(&it6_m_d));
+            printf("advance Found: %d\n\n", it6_m_d.get_value(&it6_m_d));
         }
         else
         {
