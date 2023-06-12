@@ -68,6 +68,10 @@ int main()
     printf("Insert at end : %f\n", 7.764);
     l1.insert_at_end(&l1,7.764);
 
+    print_display;
+    l1.disp_list(&l1);
+    print_dash;
+
     double_l_iterator it_l_d;
     init_list_iterator(double, l1, it_l_d);
     double min_l;
@@ -123,7 +127,7 @@ int main()
         printf("Not Found\n\n");
     }
     print_dash;
-    printf("Using advance to advance iterators for a different range to search for the key %lf in\n\n", 5.67);
+    printf("Using advance to advance iterators for a different range to search for the key %lf in the list\n\n", 5.67);
     double_l_iterator it6_l_d = *(l1.begin(&l1));
     it6_l_d.advance(&it6_l_d,2);
 
@@ -249,7 +253,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in the list\n\n", 4);
         int_l_iterator it6_l_d = *(l1.begin(&l1));
         it6_l_d.advance(&it6_l_d,2);
 

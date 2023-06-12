@@ -55,7 +55,7 @@ int main()
     print_display;
     l1.disp_stack(&l1);
     print_dash;
-    printf("Deleting Key : %f\n", 1.254);
+    printf("Pop\n");
     l1.pop(&l1);
     print_display;
     l1.disp_stack(&l1);
@@ -66,6 +66,11 @@ int main()
     l1.push(&l1,6.435);
     printf("Push : %f\n", 7.764);
     l1.push(&l1,7.764);
+
+    print_dash;
+    print_display;
+    l1.disp_stack(&l1);
+    print_dash;
 
     double_s_iterator it_s_d;
     init_stack_iterator(double, l1, it_s_d);
@@ -122,7 +127,7 @@ int main()
         printf("Not Found\n\n");
     }
     print_dash;
-    printf("Using advance to advance iterators for a different range to search for the key %lf in\n\n", 5.67);
+    printf("Using advance to advance iterators for a different range to search for the key %lf in the stack\n\n", 5.67);
     double_s_iterator it6_s_d = *(l1.begin(&l1));
     it6_s_d.advance(&it6_s_d,2);
 
@@ -181,7 +186,7 @@ int main()
         print_display;
         l1.disp_stack(&l1);
         print_dash;
-        printf("Deleting Key : %d\n", 5);
+        printf("Pop\n");
         l1.pop(&l1);
         print_display;
         l1.disp_stack(&l1);
@@ -192,6 +197,11 @@ int main()
         l1.push(&l1,8);
         printf("Push : %d\n", 3);
         l1.push(&l1,3);
+
+        print_dash;
+        print_display;
+        l1.disp_stack(&l1);
+        print_dash;
 
         int_s_iterator it_s_d;
         init_stack_iterator(int, l1, it_s_d);
@@ -248,7 +258,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in the stack\n\n", 4);
         int_s_iterator it6_s_d = *(l1.begin(&l1));
         it6_s_d.advance(&it6_s_d,2);
 
@@ -306,7 +316,7 @@ int main()
         print_display;
         l1.disp_stack(&l1);
         print_dash;
-        printf("Deleting Key : %c\n", 'G');
+        printf("Pop\n");
         l1.pop(&l1);
         print_display;
         l1.disp_stack(&l1);

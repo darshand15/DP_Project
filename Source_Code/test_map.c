@@ -70,6 +70,11 @@ int main()
     printf("insert_map : %d : %d\n", 18, 36);
     l1.insert_map(&l1, 18, 36);
 
+    print_dash;
+    print_display;
+    l1.disp_map(&l1);
+    print_dash;
+
     int_int_m_iterator it_m_d;
     init_map_iterator(int, int, l1, it_m_d);
     int min_m;
@@ -102,7 +107,7 @@ int main()
     int_int_m_iterator it4_m_d = *(l1.begin(&l1));
     int_int_m_iterator it5_m_d = *(l1.end(&l1));
 
-    printf("Using Generic Algorithm Find on key %lf\n\n", 6);
+    printf("Using Generic Algorithm Find on key %d\n\n", 6);
     find(it4_m_d, it5_m_d, 6)
     if(it4_m_d.inequality(&it4_m_d, &it5_m_d))
     {
@@ -125,7 +130,7 @@ int main()
         printf("Not Found\n\n");
     }
     print_dash;
-    printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 5);
+    printf("Using advance to advance iterators for a different range to search for the key %d in the map\n\n", 5);
     int_int_m_iterator it6_m_d = *(l1.begin(&l1));
     it6_m_d.advance(&it6_m_d,2);
 
@@ -164,7 +169,7 @@ int main()
     print_dash;
 
     {
-        printf("map of int type\n\n");
+        printf("map of int to double type\n\n");
         int_double_m l1;
         init_map(int, double, 100, l1);
 
@@ -251,7 +256,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 9);
+        printf("Using advance to advance iterators for a different range to search for the key %d in the map\n\n", 9);
         int_double_m_iterator it6_m_d = *(l1.begin(&l1));
         it6_m_d.advance(&it6_m_d,2);
 

@@ -55,7 +55,7 @@ int main()
     print_display;
     l1.disp_queue(&l1);
     print_dash;
-    printf("Deleting Key : %f\n", 1.254);
+    printf("Dequeue\n");
     l1.dequeue(&l1);
     print_display;
     l1.disp_queue(&l1);
@@ -66,6 +66,11 @@ int main()
     l1.enqueue(&l1,6.435);
     printf("enqueue : %f\n", 7.764);
     l1.enqueue(&l1,7.764);
+
+    print_dash;
+    print_display;
+    l1.disp_queue(&l1);
+    print_dash;
 
     double_q_iterator it_q_d;
     init_queue_iterator(double, l1, it_q_d);
@@ -122,7 +127,7 @@ int main()
         printf("Not Found\n\n");
     }
     print_dash;
-    printf("Using advance to advance iterators for a different range to search for the key %lf in\n\n", 5.67);
+    printf("Using advance to advance iterators for a different range to search for the key %lf in the queue\n\n", 5.67);
     double_q_iterator it6_q_d = *(l1.begin(&l1));
     it6_q_d.advance(&it6_q_d,2);
 
@@ -180,7 +185,7 @@ int main()
         print_display;
         l1.disp_queue(&l1);
         print_dash;
-        printf("Deleting Key : %d\n", 5);
+        printf("Dequeue\n");
         l1.dequeue(&l1);
         print_display;
         l1.disp_queue(&l1);
@@ -247,7 +252,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in the queue\n\n", 4);
         int_q_iterator it6_q_d = *(l1.begin(&l1));
         it6_q_d.advance(&it6_q_d,2);
 
@@ -306,7 +311,7 @@ int main()
         print_display;
         l1.disp_queue(&l1);
         print_dash;
-        printf("Deleting Key : %c\n", 'G');
+        printf("Dequeue\n");
         l1.dequeue(&l1);
         print_display;
         l1.disp_queue(&l1);

@@ -57,7 +57,7 @@ int main()
     print_display;
     l1.disp_vector(&l1);
     print_dash;
-    printf("Pop\n", 1.254);
+    printf("Pop\n");
     l1.pop_back(&l1);
     print_display;
     l1.disp_vector(&l1);
@@ -68,6 +68,11 @@ int main()
     l1.push_back(&l1,6.435);
     printf("Push : %f\n", 7.764);
     l1.push_back(&l1,7.764);
+
+    print_dash;
+    print_display;
+    l1.disp_vector(&l1);
+    print_dash;
 
     double_v_iterator it_v_d;
     init_vector_iterator(double, l1, it_v_d);
@@ -124,7 +129,7 @@ int main()
         printf("Not Found\n\n");
     }
     print_dash;
-    printf("Using advance to advance iterators for a different range to search for the key %lf in\n\n", 5.67);
+    printf("Using advance to advance iterators for a different range to search for the key %lf in the vector\n\n", 5.67);
     double_v_iterator it6_v_d = *(l1.begin(&l1));
     it6_v_d.advance(&it6_v_d,2);
 
@@ -182,7 +187,7 @@ int main()
         print_display;
         l1.disp_vector(&l1);
         print_dash;
-        printf("Pop\n", 5);
+        printf("Pop\n");
         l1.pop_back(&l1);
         print_display;
         l1.disp_vector(&l1);
@@ -249,7 +254,7 @@ int main()
             printf("Not Found\n\n");
         }
         print_dash;
-        printf("Using advance to advance iterators for a different range to search for the key %d in\n\n", 4);
+        printf("Using advance to advance iterators for a different range to search for the key %d in the vector\n\n", 4);
         int_v_iterator it6_v_d = *(l1.begin(&l1));
         it6_v_d.advance(&it6_v_d,2);
 
@@ -307,7 +312,7 @@ int main()
         print_display;
         l1.disp_vector(&l1);
         print_dash;
-        printf("Pop\n", 'G');
+        printf("Pop\n");
         l1.pop_back(&l1);
         print_display;
         l1.disp_vector(&l1);
