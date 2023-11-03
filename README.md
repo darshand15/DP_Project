@@ -266,7 +266,7 @@ A project aimed at implementing Generic Programming features as a design pattern
 * Accumulate:
     * Function Signature: accumulate(first, last, acc)
 
-### Details about running the software:
+### Details about running the Software
 
 * The above generic programming features have been implemented as a header file that the client can include in their programs
 * This header file (**generics.h**) has been placed inside the **Source_Code** folder of this repository
