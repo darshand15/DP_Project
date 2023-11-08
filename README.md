@@ -2,7 +2,7 @@
 
 ## Generic Programming in C
 
-### Team Members:
+### Team Members
 
 - Darshan D
 - Karan Kumar G
